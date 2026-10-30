@@ -18,10 +18,14 @@ No game files are included. The client patches a copy of your own install.
 4. Type `/install <path to your BLACK SOULS folder>` in the client
 5. Connect to the server and play `Game.exe` from the new `BLACK SOULS Archipelago` folder
 
+## Tracker
+
+`blacksouls_tracker.zip` in Releases is a [PopTracker](https://github.com/black-sliver/PopTracker/releases) pack. Drag it into the PopTracker window, then connect it to the same server as the client. It marks every check as reachable, out of logic or done.
+
 The full guide is in [worlds/blacksouls/docs/setup_en.md](worlds/blacksouls/docs/setup_en.md).
 
 ## Repo layout
 
 - `worlds/blacksouls` is the apworld source
 - `worlds/blacksouls/game/ap.rb` is the script injected into the game
-- `tools` holds the scripts used to read the game data and build the location tables
+- `tools` holds the scripts used to read the game data, build the location tables and build the tracker

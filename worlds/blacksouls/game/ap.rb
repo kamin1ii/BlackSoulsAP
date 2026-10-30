@@ -13,6 +13,7 @@ module BSAP
   @locs = {}
   @scouts = {}
   @swaps = {}
+  @enemy_swaps = {}
   @boss_checks = {}
   @seed = nil
   @session_mtime = nil
@@ -51,6 +52,7 @@ module BSAP
     @locs = {}
     @scouts = {}
     @swaps = {}
+    @enemy_swaps = {}
     @boss_checks = {}
     lines.each do |line|
       f = line.split("\t")
@@ -60,6 +62,7 @@ module BSAP
       when "scout" then @scouts[f[1]] = f[2]
       when "boss" then @boss_checks[f[1].to_i] = true
       when "swap" then @swaps[f[1].to_i] = [f[2].to_i, f[3].to_f, f[4].to_f]
+      when "eswap" then @enemy_swaps[f[1].to_i] = [f[2].to_i, f[3].to_f, f[4].to_f]
       end
     end
   end
@@ -73,7 +76,11 @@ module BSAP
   end
 
   def self.swap(troop_id)
-    @swaps[troop_id]
+    @swaps[troop_id] || @enemy_swaps[troop_id]
+  end
+
+  def self.enemy_swap(troop_id)
+    @enemy_swaps[troop_id]
   end
 
   def self.boss_check?(troop_id)
@@ -219,6 +226,18 @@ class Game_Interpreter
       end
     end
     bsap_command_301
+  end
+end
+
+class Game_Player
+  alias bsap_make_encounter_troop_id make_encounter_troop_id
+  def make_encounter_troop_id
+    troop_id = bsap_make_encounter_troop_id
+    swap = BSAP.active? && BSAP.enemy_swap(troop_id)
+    return troop_id unless swap
+    $game_temp.bsap_troop = troop_id
+    $game_temp.bsap_scale = [swap[1], swap[2]]
+    swap[0]
   end
 end
 

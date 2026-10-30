@@ -8,3 +8,5 @@ __pycache__/
 solo/
 solo_out/
 extracted_steam/
+goals/
+goals_out/

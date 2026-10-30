@@ -3,9 +3,10 @@
 An [Archipelago](https://archipelago.gg) world for BLACK SOULS (RPG Maker VX Ace).
 
 - Pickups and boss rewards are shuffled into the multiworld (595 locations)
-- Every boss kill is a check (55 bosses)
+- Every boss kill is a check (56 bosses)
 - Optional boss shuffle with HP and damage scaled to the arena
-- Goal is defeating Cinderella in the Lost Empire
+- Pick which ending counts as your goal (any ending, or A, B, C or D)
+- Optional enemy shuffle
 
 No game files are included. The client patches a copy of your own install.
 

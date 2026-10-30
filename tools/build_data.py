@@ -192,10 +192,10 @@ for r in item_rows:
     if seen[r["name"]] > 1:
         r["name"] = f"{r['name']} ({r['kind']})"
 
-# prologue only groups, the hare knight miniboss and centaur groups that flip switches
-SKIP_ENEMY_TROOPS = {1, 2, 3, 4, 5, 47, 48, 73}
+# the scripted executioner pig, the hare knight miniboss and centaur groups that flip switches
+SKIP_ENEMY_TROOPS = {3, 47, 48, 73}
 encounter_troops = set()
-for mid in MAP_AREA:
+for mid in list(MAP_AREA) + [99]:
     for enc in load(DATA / f"Map{mid:03d}.rvdata2")["encounter_list"] or []:
         encounter_troops.add(enc["troop_id"])
 enemy_rows = [dict(troop=tid, **troop_stats(tid)) for tid in sorted(encounter_troops - SKIP_ENEMY_TROOPS)]

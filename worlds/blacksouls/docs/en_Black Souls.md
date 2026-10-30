@@ -23,7 +23,7 @@ The Goal option picks which ending finishes your game.
 
 - Any Ending counts whichever ending you reach first
 - Ending A and Ending B come from defeating Cinderella in the Lost Empire
-- Ending C is the fairy-tale book route through Alice's Library. With this goal the fairy-tale books stay in their normal spots so you can always collect them all
+- Ending C is the fairy-tale book route through Alice's Library
 - Ending D is the route through Kun-Yan
 
 For Ending C and Ending D the logic expects every area to be reachable before you finish.
@@ -36,3 +36,4 @@ A popup in the bottom left shows the item name and who it belongs to.
 
 - NPC rewards that depend on story choices only hold filler, so a missed quest never locks you out
 - Shops are not randomized
+- Fairy-tale books stay where the normal game gives them, from fairy-tale bosses and story events. The Randomize Fairy-Tale Books option shuffles them, except with the Ending C goal

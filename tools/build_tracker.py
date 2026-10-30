@@ -119,6 +119,8 @@ def main():
     sections = {area: [] for area in POSITIONS}
     location_map = {}
     for i, loc in enumerate(locations):
+        if loc["kind"] == "item" and 273 <= loc["id"] <= 304:
+            continue
         name = loc["name"].split(" - ", 1)[1]
         rule = sorted(needs[loc["area"]] | ({"masterkey"} if loc["key_door"] else set()))
         sections[loc["area"]].append({"name": name, "item_count": 1, "access_rules": [",".join(rule)] if rule else []})

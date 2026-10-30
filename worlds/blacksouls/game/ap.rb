@@ -14,6 +14,7 @@ module BSAP
   @scouts = {}
   @swaps = {}
   @enemy_swaps = {}
+  @mirrors = {}
   @boss_checks = {}
   @seed = nil
   @session_mtime = nil
@@ -53,6 +54,7 @@ module BSAP
     @scouts = {}
     @swaps = {}
     @enemy_swaps = {}
+    @mirrors = {}
     @boss_checks = {}
     lines.each do |line|
       f = line.split("\t")
@@ -63,6 +65,7 @@ module BSAP
       when "boss" then @boss_checks[f[1].to_i] = true
       when "swap" then @swaps[f[1].to_i] = [f[2].to_i, f[3].to_f, f[4].to_f]
       when "eswap" then @enemy_swaps[f[1].to_i] = [f[2].to_i, f[3].to_f, f[4].to_f]
+      when "mirror" then (@mirrors[f[1].to_i] ||= []) << [f[2].to_i, f[3].to_i, f[4].to_i, f[5].to_i, f[6]]
       end
     end
   end
@@ -81,6 +84,15 @@ module BSAP
 
   def self.enemy_swap(troop_id)
     @enemy_swaps[troop_id]
+  end
+
+  def self.mirrors(map_id)
+    @mirrors[map_id] || []
+  end
+
+  def self.take_mirror(key)
+    check(key)
+    popup(scout(key) || "Archipelago item", "Item sent")
   end
 
   def self.boss_check?(troop_id)
@@ -233,6 +245,33 @@ class Game_Interpreter
       end
     end
     bsap_command_301
+  end
+end
+
+class Game_Map
+  MIRROR_BASE_ID = 9000
+
+  alias bsap_setup_events setup_events
+  def setup_events
+    bsap_setup_events
+    BSAP.refresh_session
+    return unless BSAP.active?
+    BSAP.mirrors(@map_id).each_with_index do |m, i|
+      next if $game_system.bsap_checked[m[4]]
+      source = load_data(sprintf("Data/Map%03d.rvdata2", m[2])).events[m[3]] rescue nil
+      next unless source
+      ev = Marshal.load(Marshal.dump(source))
+      ev.id = MIRROR_BASE_ID + i
+      ev.x = m[0]
+      ev.y = m[1]
+      ev.pages[0].list = [
+        RPG::EventCommand.new(355, 0, ["BSAP.take_mirror(#{m[4].inspect})"]),
+        RPG::EventCommand.new(123, 0, ["A", 0]),
+        RPG::EventCommand.new
+      ]
+      @events[ev.id] = Game_Event.new(@map_id, ev)
+    end
+    refresh_tile_events if respond_to?(:refresh_tile_events, true)
   end
 end
 

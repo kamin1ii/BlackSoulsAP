@@ -19,7 +19,14 @@ Garden of Snow) have been cleared, the same as in the normal game.
 
 ## What is the goal?
 
-Defeat Cinderella at the top of the Lost Empire.
+The Goal option picks which ending finishes your game.
+
+- Any Ending counts whichever ending you reach first
+- Ending A and Ending B come from defeating Cinderella in the Lost Empire
+- Ending C is the fairy-tale book route through Alice's Library. With this goal the fairy-tale books stay in their normal spots so you can always collect them all
+- Ending D is the route through Kun-Yan
+
+For Ending C and Ending D the logic expects every area to be reachable before you finish.
 
 ## What does another world's item look like in my game?
 

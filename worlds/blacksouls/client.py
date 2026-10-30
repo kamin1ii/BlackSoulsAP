@@ -1,6 +1,9 @@
 import asyncio
+import json
 import os
 import pkgutil
+import urllib.parse
+import urllib.request
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -10,7 +13,7 @@ from MultiServer import mark_raw
 from NetUtils import ClientStatus, NetworkItem
 
 from . import BOSS_CHECKS, GAME, ITEMS, PICKUPS, location_ids
-from .patcher import game_version, patch_game
+from .patcher import DIRECT_EXE, KIT_URL, game_version, install_direct, patch_game
 
 STORE_KEY = "black_souls"
 KNOWN_VERSIONS = {88934994, 12204037}
@@ -30,6 +33,13 @@ def clean(text: str) -> str:
     return text.replace("\t", " ").replace("\n", " ")
 
 
+def direct_data() -> Dict:
+    mirrors = [[m["map"], m["x"], m["y"], m["src_map"], m["src_event"], loc["key"]]
+               for loc in PICKUPS for m in [loc.get("mirror")] if m]
+    items = {str(i): [row["kind"], row["id"], row["amount"]] for i, row in ITEM_BY_ID.items()}
+    return {"locations": KEY_TO_ID, "items": items, "mirrors": mirrors}
+
+
 class BlackSoulsCommandProcessor(ClientCommandProcessor):
     @mark_raw
     def _cmd_install(self, folder: str = "") -> bool:
@@ -43,13 +53,23 @@ class BlackSoulsCommandProcessor(ClientCommandProcessor):
             if game_version(source) not in KNOWN_VERSIONS:
                 self.output("Warning, this game version is untested and some checks may not line up")
             self.output(f"Copying the game to {target}, this can take a minute")
-            mod = pkgutil.get_data(__package__, "game/ap.rb").decode("utf-8")
+            mod = "\n".join(pkgutil.get_data(__package__, f"game/{name}").decode("utf-8")
+                            for name in ("ap.rb", "ap_net.rb"))
             target = patch_game(source, target, mod)
         except Exception as e:
             self.output(f"Install failed {e}")
             return False
         self.ctx.set_game_dir(target)
-        self.output(f"Done. Play the game from {target / 'Game.exe'}")
+        self.output(f"Done. Play with this client open from {target / 'Game.exe'}")
+        try:
+            self.output("Downloading the direct connection runtime by EggSlashEther")
+            with urllib.request.urlopen(KIT_URL, timeout=60) as response:
+                kit = response.read()
+            exe = install_direct(target, kit, direct_data())
+            self.ctx.write_direct_config()
+            self.output(f"Or play without this client from {exe}, after setting the server in archipelago.json")
+        except Exception as e:
+            self.output(f"Direct connection setup skipped {e}")
         return True
 
     @mark_raw
@@ -83,6 +103,15 @@ class BlackSoulsContext(CommonContext):
         if self.slot is not None:
             self.write_session()
 
+    def write_direct_config(self) -> None:
+        if not self.game_dir or not (self.game_dir / DIRECT_EXE).exists() or not self.server_address or not self.auth:
+            return
+        address = self.server_address if "://" in self.server_address else "ws://" + self.server_address
+        parsed = urllib.parse.urlparse(address)
+        config = {"hostname": parsed.hostname or "archipelago.gg", "port": parsed.port or 38281,
+                  "name": self.auth, "password": self.password or ""}
+        (self.game_dir / "archipelago.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
+
     @property
     def bridge(self) -> Optional[Path]:
         if not self.game_dir:
@@ -103,6 +132,7 @@ class BlackSoulsContext(CommonContext):
             self.inbox_count = -1
             if not self.game_dir:
                 logger.info("Run /install <path to your BLACK SOULS folder> to make the Archipelago copy of the game")
+            self.write_direct_config()
             real = sorted(self.missing_locations | self.checked_locations)
             asyncio.create_task(self.send_msgs([{"cmd": "LocationScouts", "locations": real, "create_as_hint": 0}]))
             self.write_session()

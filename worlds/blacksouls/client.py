@@ -113,7 +113,7 @@ class BlackSoulsContext(CommonContext):
         bridge = self.bridge
         if not bridge or self.slot is None:
             return
-        lines = [f"seed\t{self.seed_name}\t{self.slot}"]
+        lines = [f"seed\t{self.seed_name or 'local'}\t{self.slot}"]
         for key, loc_id in KEY_TO_ID.items():
             if key.startswith("boss:"):
                 lines.append(f"boss\t{key[5:]}")

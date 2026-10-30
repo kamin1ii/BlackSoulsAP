@@ -1,12 +1,25 @@
 """Builds an Archipelago ready copy of a BLACK SOULS install."""
+import io
+import json
 import os
 import random
 import shutil
 import struct
+import zipfile
 import zlib
 from pathlib import Path
 
+try:
+    from .icon import extract_icon_png
+except ImportError:
+    from icon import extract_icon_png
+
 SCRIPTS_NAME = "Data/Scripts.rvdata2"
+# RPGMaker VX Ace AP by EggSlashEther, MIT licensed, pinned so updates cannot break installs
+KIT_COMMIT = "801c818f86b80a334bd4f2dbdf2e3bf219a7790a"
+KIT_URL = f"https://codeload.github.com/EggSlashEther/RPGMaker-VX-Ace-AP/zip/{KIT_COMMIT}"
+KIT_FILES = ["mkxp-z.exe", "libcrypto-3-x64.dll", "libssl-3-x64.dll", "x64-msvcrt-ruby310.dll", "zlib1.dll"]
+DIRECT_EXE = "Game_Archipelago.exe"
 MOD_SCRIPT_TITLE = "Archipelago"
 
 
@@ -215,3 +228,44 @@ def patch_game(source: Path, target: Path, mod_source: str, copy: bool = True) -
         if path.exists():
             os.remove(path)
     return target
+
+
+def find_rtp():
+    try:
+        import winreg
+        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Enterbrain\RGSS3\RTP") as key:
+            return winreg.QueryValueEx(key, "RPGVXAce")[0]
+    except OSError:
+        return None
+
+
+def install_direct(target: Path, kit_zip: bytes, data: dict) -> Path:
+    target = Path(target)
+    with zipfile.ZipFile(io.BytesIO(kit_zip)) as z:
+        root = z.namelist()[0].split("/")[0]
+        for member in z.namelist():
+            rel = member[len(root) + 1:]
+            if not rel or member.endswith("/"):
+                continue
+            if rel in KIT_FILES or rel == "LICENSE.txt" or rel.startswith("Ruby/"):
+                name = {"mkxp-z.exe": DIRECT_EXE, "LICENSE.txt": "LICENSE RPGMaker-VX-Ace-AP.txt"}.get(rel, rel)
+                dest = target / name
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                dest.write_bytes(z.read(member))
+    ap_dir = target / "Archipelago"
+    ap_dir.mkdir(exist_ok=True)
+    (ap_dir / "data.json").write_text(json.dumps(data), encoding="utf-8")
+    config = {"rgssVersion": 3, "windowTitle": "BLACK SOULS Archipelago", "fontSub": ["UmePlus Gothic>VL Gothic"]}
+    rtp = find_rtp()
+    if rtp:
+        config["RTP"] = [rtp.replace("\\", "/")]
+    icon = extract_icon_png(target / "Game.exe")
+    if icon:
+        (ap_dir / "icon.png").write_bytes(icon)
+        config["iconPath"] = "Archipelago/icon.png"
+    (target / "mkxp.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
+    connect = target / "archipelago.json"
+    if not connect.exists():
+        connect.write_text(json.dumps({"hostname": "archipelago.gg", "port": 38281, "name": "Player", "password": ""},
+                                      indent=2), encoding="utf-8")
+    return target / DIRECT_EXE

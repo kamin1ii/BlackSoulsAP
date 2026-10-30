@@ -165,7 +165,7 @@ def main():
     (OUT / "scripts" / "init.lua").write_text((ROOT / "tools" / "tracker_init.lua").read_text(encoding="utf-8"),
                                                encoding="utf-8")
     (OUT / "manifest.json").write_text(json.dumps({
-        "name": "Black Souls Archipelago", "game_name": "Black Souls", "package_version": "0.1.0",
+        "name": "Black Souls Archipelago", "game_name": "Black Souls", "package_version": "0.2.0",
         "package_uid": "black_souls_ap", "author": "kamin1ii", "min_poptracker_version": "0.25.0",
         "variants": {"standard": {"display_name": "Standard", "flags": ["ap"]}}}, indent=1), encoding="utf-8")
 

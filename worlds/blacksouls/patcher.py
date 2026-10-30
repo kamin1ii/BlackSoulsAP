@@ -150,7 +150,17 @@ def find_game_root(folder: Path) -> Path:
     for child in folder.iterdir():
         if child.is_dir() and (child / "Game.rgss3a").exists():
             return child
-    raise FileNotFoundError(f"No Game.rgss3a found in {folder}")
+    raise FileNotFoundError(f"No Game.rgss3a found in {folder}, only the English 2019 release is supported so far")
+
+
+def game_version(folder: Path) -> int:
+    data = read_archive_file(find_game_root(Path(folder)) / "Game.rgss3a", "Data/System.rvdata2")
+    at = data.find(b"@version_id")
+    if at < 0 or data[at + 11:at + 12] != b"i":
+        return 0
+    reader = _Reader(data)
+    reader.p = at + 12
+    return reader.long()
 
 
 def patch_game(source: Path, target: Path, mod_source: str, copy: bool = True) -> Path:

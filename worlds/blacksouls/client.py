@@ -6,12 +6,14 @@ from typing import Dict, Optional
 
 import Utils
 from CommonClient import ClientCommandProcessor, CommonContext, get_base_parser, gui_enabled, logger, server_loop
+from MultiServer import mark_raw
 from NetUtils import ClientStatus, NetworkItem
 
 from . import BOSS_CHECKS, GAME, ITEMS, PICKUPS, location_ids
-from .patcher import patch_game
+from .patcher import game_version, patch_game
 
 STORE_KEY = "black_souls"
+KNOWN_VERSIONS = {88934994}
 ITEM_BY_ID = {7_710_000 + i: row for i, row in enumerate(ITEMS)}
 KEY_TO_ID = {loc["key"]: location_ids[loc["name"]] for loc in PICKUPS}
 KEY_TO_ID.update({f"boss:{b['troop']}": location_ids[b["name"]] for b in BOSS_CHECKS})
@@ -29,15 +31,18 @@ def clean(text: str) -> str:
 
 
 class BlackSoulsCommandProcessor(ClientCommandProcessor):
+    @mark_raw
     def _cmd_install(self, folder: str = "") -> bool:
         """Make an Archipelago copy of your BLACK SOULS folder. Usage /install <path to BLACK SOULS folder>"""
         if not folder:
             self.output("Usage /install <path to your BLACK SOULS folder>")
             return False
-        source = Path(folder.strip('"'))
+        source = Path(folder.strip().strip('"'))
         target = source.parent / (source.name + " Archipelago")
-        self.output(f"Copying the game to {target}, this can take a minute")
         try:
+            if game_version(source) not in KNOWN_VERSIONS:
+                self.output("Warning, this game version is untested and some checks may not line up")
+            self.output(f"Copying the game to {target}, this can take a minute")
             mod = pkgutil.get_data(__package__, "game/ap.rb").decode("utf-8")
             target = patch_game(source, target, mod)
         except Exception as e:
@@ -47,10 +52,11 @@ class BlackSoulsCommandProcessor(ClientCommandProcessor):
         self.output(f"Done. Play the game from {target / 'Game.exe'}")
         return True
 
+    @mark_raw
     def _cmd_game(self, folder: str = "") -> bool:
         """Show or set the patched game folder. Usage /game <path>"""
         if folder:
-            self.ctx.set_game_dir(Path(folder.strip('"')))
+            self.ctx.set_game_dir(Path(folder.strip().strip('"')))
         self.output(f"Game folder is {self.ctx.game_dir or 'not set, use /install first'}")
         return True
 

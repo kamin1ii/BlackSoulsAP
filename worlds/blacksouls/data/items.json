@@ -1,0 +1,1269 @@
+[
+{
+"name": "Herb Flask",
+"kind": "item",
+"id": 1,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Herb Flask M",
+"kind": "item",
+"id": 2,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Medical Herb",
+"kind": "item",
+"id": 3,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Medical Herb x3",
+"kind": "item",
+"id": 3,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "Medical Herb x5",
+"kind": "item",
+"id": 3,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Antidote Herb x3",
+"kind": "item",
+"id": 4,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "Antidote Herb x10",
+"kind": "item",
+"id": 4,
+"amount": 10,
+"cls": "filler"
+},
+{
+"name": "Bleed-stopper",
+"kind": "item",
+"id": 5,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Bleed-stopper x5",
+"kind": "item",
+"id": 5,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Eye Drops",
+"kind": "item",
+"id": 6,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Cure Herb",
+"kind": "item",
+"id": 7,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Cure Herb x3",
+"kind": "item",
+"id": 7,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "Divine Blessing",
+"kind": "item",
+"id": 8,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Divine Blessing x20",
+"kind": "item",
+"id": 8,
+"amount": 20,
+"cls": "useful"
+},
+{
+"name": "Green Soul",
+"kind": "item",
+"id": 9,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Green Soul x3",
+"kind": "item",
+"id": 9,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "Green Soul x5",
+"kind": "item",
+"id": 9,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Purple Soul",
+"kind": "item",
+"id": 10,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Purple Soul x3",
+"kind": "item",
+"id": 10,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "Purple Soul x5",
+"kind": "item",
+"id": 10,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Red Soul",
+"kind": "item",
+"id": 11,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Red Soul x5",
+"kind": "item",
+"id": 11,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Blue Soul",
+"kind": "item",
+"id": 12,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Blue Soul x5",
+"kind": "item",
+"id": 12,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Yellow Soul",
+"kind": "item",
+"id": 13,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Yellow Soul x5",
+"kind": "item",
+"id": 13,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Ashen Soul",
+"kind": "item",
+"id": 14,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Ashen Soul x5",
+"kind": "item",
+"id": 14,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "White Soul",
+"kind": "item",
+"id": 15,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "White Soul x3",
+"kind": "item",
+"id": 15,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "White Soul x5",
+"kind": "item",
+"id": 15,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Black Soul",
+"kind": "item",
+"id": 16,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Erin's Remedy x3",
+"kind": "item",
+"id": 17,
+"amount": 3,
+"cls": "useful"
+},
+{
+"name": "Homeward Bonedust",
+"kind": "item",
+"id": 18,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Homeward Bonedust x5",
+"kind": "item",
+"id": 18,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Soul of Sinner",
+"kind": "item",
+"id": 19,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Invisibility Powder",
+"kind": "item",
+"id": 20,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Rubbish",
+"kind": "item",
+"id": 21,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Magistone",
+"kind": "item",
+"id": 22,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Magical Mirror",
+"kind": "item",
+"id": 23,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy Powder",
+"kind": "item",
+"id": 24,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Ore Shard",
+"kind": "item",
+"id": 26,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Ore Shard x2",
+"kind": "item",
+"id": 26,
+"amount": 2,
+"cls": "filler"
+},
+{
+"name": "Ore Shard x3",
+"kind": "item",
+"id": 26,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "Ore Shard x5",
+"kind": "item",
+"id": 26,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Large Ore Shard",
+"kind": "item",
+"id": 27,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Large Ore Shard x2",
+"kind": "item",
+"id": 27,
+"amount": 2,
+"cls": "filler"
+},
+{
+"name": "Large Ore Shard x3",
+"kind": "item",
+"id": 27,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "Ore Chunk",
+"kind": "item",
+"id": 28,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Ore Chunk x2",
+"kind": "item",
+"id": 28,
+"amount": 2,
+"cls": "filler"
+},
+{
+"name": "Ore Chunk x3",
+"kind": "item",
+"id": 28,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "Ore Slab",
+"kind": "item",
+"id": 29,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Firebomb",
+"kind": "item",
+"id": 30,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Firebomb x3",
+"kind": "item",
+"id": 30,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "Firebomb x5",
+"kind": "item",
+"id": 30,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Dung Pie",
+"kind": "item",
+"id": 31,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Dung Pie x5",
+"kind": "item",
+"id": 31,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Charcoal Pine Resin",
+"kind": "item",
+"id": 32,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Frigid Pine Resin",
+"kind": "item",
+"id": 33,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Gold Pine Resin",
+"kind": "item",
+"id": 34,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Gold Pine Resin x3",
+"kind": "item",
+"id": 34,
+"amount": 3,
+"cls": "filler"
+},
+{
+"name": "Fading Soul",
+"kind": "item",
+"id": 35,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Soul of a Lost Undead",
+"kind": "item",
+"id": 36,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Large Soul of a Lost Undead",
+"kind": "item",
+"id": 37,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Soul of a Nameless Soldier",
+"kind": "item",
+"id": 38,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Large Soul of a Nameless Soldier",
+"kind": "item",
+"id": 39,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Soul of a Proud Knight",
+"kind": "item",
+"id": 40,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Large Soul of a Proud Knight",
+"kind": "item",
+"id": 41,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Soul of a Brave Warrior",
+"kind": "item",
+"id": 42,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Large Soul of a Brave Warrior",
+"kind": "item",
+"id": 43,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Soul of a Hero",
+"kind": "item",
+"id": 44,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Soul of a Great Hero",
+"kind": "item",
+"id": 45,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Desert Rose",
+"kind": "item",
+"id": 46,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Master Key",
+"kind": "item",
+"id": 47,
+"amount": 1,
+"cls": "progression"
+},
+{
+"name": "White and Sticky",
+"kind": "item",
+"id": 48,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Candy",
+"kind": "item",
+"id": 49,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Candy x5",
+"kind": "item",
+"id": 49,
+"amount": 5,
+"cls": "filler"
+},
+{
+"name": "Candy x10",
+"kind": "item",
+"id": 49,
+"amount": 10,
+"cls": "filler"
+},
+{
+"name": "Anti-Fairy",
+"kind": "item",
+"id": 51,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Invitation to Atlantica",
+"kind": "item",
+"id": 52,
+"amount": 1,
+"cls": "progression"
+},
+{
+"name": "Breadcrumb",
+"kind": "item",
+"id": 53,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Match",
+"kind": "item",
+"id": 54,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Jeanne's Ashes",
+"kind": "item",
+"id": 55,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Alice's Ribbon",
+"kind": "item",
+"id": 179,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Black Ash",
+"kind": "item",
+"id": 181,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Fairy's Wing",
+"kind": "item",
+"id": 182,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Feather of Immortal Bird",
+"kind": "item",
+"id": 183,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Succubus Fluids",
+"kind": "item",
+"id": 184,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Hansel&Gretel]",
+"kind": "item",
+"id": 273,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Three Little Pigs]",
+"kind": "item",
+"id": 274,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Beauty and Beast]",
+"kind": "item",
+"id": 288,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Tortoise and Hare]",
+"kind": "item",
+"id": 289,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Little Match Girl]",
+"kind": "item",
+"id": 290,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Alice in Wonderland]",
+"kind": "item",
+"id": 291,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Wizard of Oz]",
+"kind": "item",
+"id": 292,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Jeanne d'Arc]",
+"kind": "item",
+"id": 293,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Golden Goose]",
+"kind": "item",
+"id": 294,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Saint of Alexandria]",
+"kind": "item",
+"id": 295,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Rapunzel]",
+"kind": "item",
+"id": 297,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Snow White]",
+"kind": "item",
+"id": 300,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Queen Elisabeth]",
+"kind": "item",
+"id": 302,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Little Red Riding Hood]",
+"kind": "item",
+"id": 304,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Soul Radiance]",
+"kind": "item",
+"id": 319,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Omniblow]",
+"kind": "item",
+"id": 321,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Reflect Magic]",
+"kind": "item",
+"id": 331,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Miracle [Preraise]",
+"kind": "item",
+"id": 334,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Withstand]",
+"kind": "item",
+"id": 335,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Flame]",
+"kind": "item",
+"id": 336,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Silence Bubble]",
+"kind": "item",
+"id": 337,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Dark Side Moon]",
+"kind": "item",
+"id": 338,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Frozen Magic Bullet]",
+"kind": "item",
+"id": 339,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Conflagration]",
+"kind": "item",
+"id": 340,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Ruinous Storm]",
+"kind": "item",
+"id": 341,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Power Within]",
+"kind": "item",
+"id": 342,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Heavy Soul Arrow]",
+"kind": "item",
+"id": 343,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Heavy Soul Discharge]",
+"kind": "item",
+"id": 400,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Sorcery [Hidden Body]",
+"kind": "item",
+"id": 401,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Miracle [Providence]",
+"kind": "item",
+"id": 402,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Miracle [Raise II]",
+"kind": "item",
+"id": 403,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Knight's Sword",
+"kind": "weapon",
+"id": 101,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Knight's Sword+3",
+"kind": "weapon",
+"id": 104,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Thief's Dagger",
+"kind": "weapon",
+"id": 112,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Deviledge",
+"kind": "weapon",
+"id": 134,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Partisan",
+"kind": "weapon",
+"id": 145,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Morgenstern",
+"kind": "weapon",
+"id": 156,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Sorcerer's Staff",
+"kind": "weapon",
+"id": 167,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Hunter's Bow",
+"kind": "weapon",
+"id": 178,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Butcher Greataxe",
+"kind": "weapon",
+"id": 189,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Storm Ruler",
+"kind": "weapon",
+"id": 211,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Andor Sword",
+"kind": "weapon",
+"id": 222,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Bunker Shield",
+"kind": "weapon",
+"id": 233,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Broken Sword",
+"kind": "weapon",
+"id": 283,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of Fragile Life",
+"kind": "armor",
+"id": 77,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Life Ring",
+"kind": "armor",
+"id": 79,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of Enduring",
+"kind": "armor",
+"id": 80,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of the Evil Eye",
+"kind": "armor",
+"id": 81,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of Steel Protection",
+"kind": "armor",
+"id": 82,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Flame Stoneplate Ring",
+"kind": "armor",
+"id": 83,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Thunder Stoneplate Ring",
+"kind": "armor",
+"id": 84,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ice Stoneplate Ring",
+"kind": "armor",
+"id": 85,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Spell Stoneplate Ring",
+"kind": "armor",
+"id": 86,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Silver Ring of Avarice",
+"kind": "armor",
+"id": 87,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Golden Ring of Avarice",
+"kind": "armor",
+"id": 88,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Poisonbite Ring",
+"kind": "armor",
+"id": 89,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Bloodbite Ring",
+"kind": "armor",
+"id": 90,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of the Edge",
+"kind": "armor",
+"id": 91,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Safeguarding Ring",
+"kind": "armor",
+"id": 92,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Hornet Ring",
+"kind": "armor",
+"id": 93,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of the Wall",
+"kind": "armor",
+"id": 94,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of Goddess",
+"kind": "armor",
+"id": 95,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Sloppy",
+"kind": "armor",
+"id": 96,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Squishy",
+"kind": "armor",
+"id": 97,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Wind God's Ring",
+"kind": "armor",
+"id": 98,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Sorcery Ring",
+"kind": "armor",
+"id": 99,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Clear Mind Ring",
+"kind": "armor",
+"id": 101,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Lighthouse Ring",
+"kind": "armor",
+"id": 103,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of Iron Maiden",
+"kind": "armor",
+"id": 104,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Princess Frog's Favor",
+"kind": "armor",
+"id": 105,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Little Mermaid's Favor",
+"kind": "armor",
+"id": 106,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Snow White's Favor",
+"kind": "armor",
+"id": 107,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Rapunzel's Favor",
+"kind": "armor",
+"id": 108,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Black Ring",
+"kind": "armor",
+"id": 109,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Miracle Ring",
+"kind": "armor",
+"id": 111,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Baphomet's Favor",
+"kind": "armor",
+"id": 113,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Honeybee Ring",
+"kind": "armor",
+"id": 116,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Apple Ring",
+"kind": "armor",
+"id": 117,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Mageslayer's Ring",
+"kind": "armor",
+"id": 118,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Sniper's Ring",
+"kind": "armor",
+"id": 120,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Wicked King's Ring",
+"kind": "armor",
+"id": 121,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of White Crow",
+"kind": "armor",
+"id": 122,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Toto's Ring",
+"kind": "armor",
+"id": 124,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Puppet's Ring",
+"kind": "armor",
+"id": 126,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of the Strong",
+"kind": "armor",
+"id": 127,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Cinderella's Favor",
+"kind": "armor",
+"id": 128,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of Heaven",
+"kind": "armor",
+"id": 129,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of the Good Witch",
+"kind": "armor",
+"id": 130,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Leaf's Ring",
+"kind": "armor",
+"id": 131,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Harlot's Ring",
+"kind": "armor",
+"id": 133,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Exorcist's Ring",
+"kind": "armor",
+"id": 134,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Ring of Unfathomable",
+"kind": "armor",
+"id": 135,
+"amount": 1,
+"cls": "useful"
+},
+{
+"name": "Champion's Ring",
+"kind": "armor",
+"id": 136,
+"amount": 1,
+"cls": "useful"
+}
+]

@@ -2,7 +2,7 @@
 
 ## What you need
 
-- A copy of BLACK SOULS (the RPG Maker VX Ace version with `Game.rgss3a` in the folder)
+- A copy of BLACK SOULS, either the Steam release or the English 2019 release
 - The RPG Maker VX Ace RTP, which the game already needs to run
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases) 0.6.2 or newer
 - `blacksouls.apworld` from the [Black Souls AP releases](https://github.com/kamin1ii/BlackSoulsAP/releases)

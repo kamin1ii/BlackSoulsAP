@@ -4,7 +4,7 @@ from BaseClasses import Item, ItemClassification, Location, LocationProgressType
 from worlds.AutoWorld import WebWorld, World
 from worlds.LauncherComponents import Component, Type, components, launch
 
-from .data import BOSSES, ITEMS, LOCATIONS
+from .data import BOSSES, ENEMIES, ITEMS, LOCATIONS
 from .options import BlackSoulsOptions
 
 GAME = "Black Souls"
@@ -109,18 +109,25 @@ class BlackSoulsWorld(World):
 
     def generate_early(self) -> None:
         self.boss_swaps: List[List[Any]] = []
-        pool = [b for b in BOSSES if b["shuffle"]]
+        self.enemy_swaps: List[List[Any]] = []
         if self.options.boss_shuffle:
-            placed = pool[:]
-            self.random.shuffle(placed)
-            for arena, boss in zip(pool, placed):
-                if arena["troop"] == boss["troop"]:
-                    continue
-                hp, atk = 1.0, 1.0
-                if self.options.boss_scaling:
-                    hp = max(0.05, min(20.0, arena["hp"] / boss["hp"]))
-                    atk = max(0.1, min(10.0, arena["atk"] / boss["atk"]))
-                self.boss_swaps.append([arena["troop"], boss["troop"], round(hp, 4), round(atk, 4)])
+            self.boss_swaps = self.shuffle_troops([b for b in BOSSES if b["shuffle"]], bool(self.options.boss_scaling))
+        if self.options.enemy_shuffle:
+            self.enemy_swaps = self.shuffle_troops(ENEMIES, True)
+
+    def shuffle_troops(self, pool: List[Dict[str, Any]], scale: bool) -> List[List[Any]]:
+        placed = pool[:]
+        self.random.shuffle(placed)
+        swaps = []
+        for slot, troop in zip(pool, placed):
+            if slot["troop"] == troop["troop"]:
+                continue
+            hp, atk = 1.0, 1.0
+            if scale:
+                hp = max(0.05, min(20.0, slot["hp"] / troop["hp"]))
+                atk = max(0.1, min(10.0, slot["atk"] / troop["atk"]))
+            swaps.append([slot["troop"], troop["troop"], round(hp, 4), round(atk, 4)])
+        return swaps
 
     def create_regions(self) -> None:
         regions = {"Menu": Region("Menu", self.player, self.multiworld)}
@@ -184,8 +191,10 @@ class BlackSoulsWorld(World):
     def fill_slot_data(self) -> Dict[str, Any]:
         return {
             "boss_swaps": self.boss_swaps,
+            "enemy_swaps": self.enemy_swaps,
             "boss_shuffle": bool(self.options.boss_shuffle),
             "boss_scaling": bool(self.options.boss_scaling),
+            "enemy_shuffle": bool(self.options.enemy_shuffle),
         }
 
 

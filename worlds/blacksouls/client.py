@@ -129,6 +129,8 @@ class BlackSoulsContext(CommonContext):
                 lines.append(f"scout\t{key}\t{self.scouts[loc_id]}")
         for arena, boss, hp, atk in self.slot_data.get("boss_swaps", []):
             lines.append(f"swap\t{arena}\t{boss}\t{hp}\t{atk}")
+        for slot, troop, hp, atk in self.slot_data.get("enemy_swaps", []):
+            lines.append(f"eswap\t{slot}\t{troop}\t{hp}\t{atk}")
         lines.append("end")
         write_atomic(bridge / "session.txt", "\n".join(lines) + "\n")
 

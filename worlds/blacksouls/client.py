@@ -14,6 +14,7 @@ from .patcher import game_version, patch_game
 
 STORE_KEY = "black_souls"
 KNOWN_VERSIONS = {88934994, 12204037}
+ENDING_GOALS = {0: None, 1: "A", 2: "B", 3: "C", 4: "D"}
 ITEM_BY_ID = {7_710_000 + i: row for i, row in enumerate(ITEMS)}
 KEY_TO_ID = {key: location_ids[loc["name"]] for loc in PICKUPS for key in [loc["key"], *loc.get("alt_keys", [])]}
 KEY_TO_ID.update({f"boss:{b['troop']}": location_ids[b["name"]] for b in BOSS_CHECKS})
@@ -167,7 +168,9 @@ class BlackSoulsContext(CommonContext):
         new = found - self.checked_locations
         if new:
             await self.check_locations(new)
-        if "goal" in lines and not self.finished_game:
+        goal = ENDING_GOALS.get(self.slot_data.get("goal", 0))
+        reached = {line[7:] for line in lines if line.startswith("ending:")}
+        if reached and (goal is None or goal in reached) and not self.finished_game:
             await self.send_msgs([{"cmd": "StatusUpdate", "status": ClientStatus.CLIENT_GOAL}])
             self.finished_game = True
 

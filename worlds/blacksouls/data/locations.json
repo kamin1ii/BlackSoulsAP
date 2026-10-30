@@ -129,7 +129,10 @@
 "item": "Fairy-tale [Little Red Riding Hood]",
 "quest": true,
 "key_door": false,
-"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood]"
+"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood]",
+"alt_keys": [
+"3:10:1:40"
+]
 },
 {
 "key": "4:6:1:21",
@@ -195,7 +198,10 @@
 "item": "Fairy-tale [Little Red Riding Hood]",
 "quest": true,
 "key_door": true,
-"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 2"
+"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 2",
+"alt_keys": [
+"5:11:0:101"
+]
 },
 {
 "key": "5:11:1:117",
@@ -206,7 +212,10 @@
 "item": "Fairy-tale [Little Red Riding Hood]",
 "quest": true,
 "key_door": true,
-"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 3"
+"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 3",
+"alt_keys": [
+"5:11:1:120"
+]
 },
 {
 "key": "5:11:2:85",
@@ -217,7 +226,10 @@
 "item": "Fairy-tale [Little Red Riding Hood]",
 "quest": true,
 "key_door": true,
-"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 4"
+"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 4",
+"alt_keys": [
+"5:11:2:88"
+]
 },
 {
 "key": "5:11:2:135",
@@ -228,7 +240,10 @@
 "item": "Fairy-tale [Little Red Riding Hood]",
 "quest": true,
 "key_door": true,
-"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 5"
+"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 5",
+"alt_keys": [
+"5:11:2:138"
+]
 },
 {
 "key": "5:11:3:99",
@@ -239,7 +254,10 @@
 "item": "Fairy-tale [Little Red Riding Hood]",
 "quest": true,
 "key_door": true,
-"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 6"
+"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 6",
+"alt_keys": [
+"5:11:3:102"
+]
 },
 {
 "key": "5:11:3:149",
@@ -250,7 +268,10 @@
 "item": "Fairy-tale [Little Red Riding Hood]",
 "quest": true,
 "key_door": true,
-"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 7"
+"name": "Red Hood's House - Fairy-tale [Little Red Riding Hood] 7",
+"alt_keys": [
+"5:11:3:152"
+]
 },
 {
 "key": "6:20:0:1",
@@ -3440,7 +3461,10 @@
 "item": "Snow White's Favor",
 "quest": true,
 "key_door": false,
-"name": "Garden of Snow - Snow White's Favor"
+"name": "Garden of Snow - Snow White's Favor",
+"alt_keys": [
+"53:5:2:53"
+]
 },
 {
 "key": "53:5:4:13",
@@ -5365,7 +5389,10 @@
 "item": "Fairy-tale [Beauty and Beast]",
 "quest": true,
 "key_door": false,
-"name": "Lost Empire - Fairy-tale [Beauty and Beast] 2"
+"name": "Lost Empire - Fairy-tale [Beauty and Beast] 2",
+"alt_keys": [
+"95:102:0:59"
+]
 },
 {
 "key": "95:111:0:1",
@@ -6025,7 +6052,10 @@
 "item": "Divine Blessing",
 "quest": true,
 "key_door": false,
-"name": "Kun-Yan - Divine Blessing x20"
+"name": "Kun-Yan - Divine Blessing x20",
+"alt_keys": [
+"133:7:4:42"
+]
 },
 {
 "key": "133:7:7:37",
@@ -6036,7 +6066,10 @@
 "item": "Exorcist's Ring",
 "quest": true,
 "key_door": false,
-"name": "Kun-Yan - Exorcist's Ring"
+"name": "Kun-Yan - Exorcist's Ring",
+"alt_keys": [
+"133:7:7:40"
+]
 },
 {
 "key": "133:7:10:36",
@@ -6047,7 +6080,10 @@
 "item": "Ring of Unfathomable",
 "quest": true,
 "key_door": false,
-"name": "Kun-Yan - Ring of Unfathomable"
+"name": "Kun-Yan - Ring of Unfathomable",
+"alt_keys": [
+"133:7:10:39"
+]
 },
 {
 "key": "133:7:13:62",
@@ -6058,7 +6094,10 @@
 "item": "Baphomet's Favor",
 "quest": true,
 "key_door": false,
-"name": "Kun-Yan - Baphomet's Favor"
+"name": "Kun-Yan - Baphomet's Favor",
+"alt_keys": [
+"133:7:13:65"
+]
 },
 {
 "key": "134:76:0:1",

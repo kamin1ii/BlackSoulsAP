@@ -130,6 +130,10 @@ class BlackSoulsContext(CommonContext):
                 lines.append(f"scout\t{key}\t{self.scouts[loc_id]}")
         for arena, boss, hp, atk in self.slot_data.get("boss_swaps", []):
             lines.append(f"swap\t{arena}\t{boss}\t{hp}\t{atk}")
+        for loc in PICKUPS:
+            m = loc.get("mirror")
+            if m:
+                lines.append(f"mirror\t{m['map']}\t{m['x']}\t{m['y']}\t{m['src_map']}\t{m['src_event']}\t{loc['key']}")
         for slot, troop, hp, atk in self.slot_data.get("enemy_swaps", []):
             lines.append(f"eswap\t{slot}\t{troop}\t{hp}\t{atk}")
         lines.append("end")

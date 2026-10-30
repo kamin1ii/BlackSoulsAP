@@ -18,7 +18,6 @@ ENDING_GOALS = {0: None, 1: "A", 2: "B", 3: "C", 4: "D"}
 ITEM_BY_ID = {7_710_000 + i: row for i, row in enumerate(ITEMS)}
 KEY_TO_ID = {key: location_ids[loc["name"]] for loc in PICKUPS for key in [loc["key"], *loc.get("alt_keys", [])]}
 KEY_TO_ID.update({f"boss:{b['troop']}": location_ids[b["name"]] for b in BOSS_CHECKS})
-ALL_LOCATION_IDS = sorted(set(KEY_TO_ID.values()))
 
 
 def write_atomic(path: Path, text: str) -> None:
@@ -104,7 +103,8 @@ class BlackSoulsContext(CommonContext):
             self.inbox_count = -1
             if not self.game_dir:
                 logger.info("Run /install <path to your BLACK SOULS folder> to make the Archipelago copy of the game")
-            asyncio.create_task(self.send_msgs([{"cmd": "LocationScouts", "locations": ALL_LOCATION_IDS, "create_as_hint": 0}]))
+            real = sorted(self.missing_locations | self.checked_locations)
+            asyncio.create_task(self.send_msgs([{"cmd": "LocationScouts", "locations": real, "create_as_hint": 0}]))
             self.write_session()
         elif cmd == "LocationInfo":
             for item in (NetworkItem(*i) for i in args["locations"]):
@@ -121,7 +121,10 @@ class BlackSoulsContext(CommonContext):
         if not bridge or self.slot is None:
             return
         lines = [f"seed\t{self.seed_name or 'local'}\t{self.slot}"]
+        real = self.missing_locations | self.checked_locations
         for key, loc_id in KEY_TO_ID.items():
+            if loc_id not in real:
+                continue
             if key.startswith("boss:"):
                 lines.append(f"boss\t{key[5:]}")
             else:

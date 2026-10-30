@@ -179,7 +179,7 @@ def patch_game(source: Path, target: Path, mod_source: str, copy: bool = True) -
     lines = ini.read_text(encoding="utf-8", errors="replace").splitlines()
     lines = [("scripts =" + SCRIPTS_NAME.replace("/", "\\")) if l.lower().replace(" ", "").startswith("scripts=") else l
              for l in lines]
-    ini.write_text("\r\n".join(lines) + "\r\n", encoding="utf-8")
+    ini.write_bytes(("\r\n".join(lines) + "\r\n").encode("utf-8"))
     (target / "Archipelago").mkdir(exist_ok=True)
     for name in ("session.txt", "inbox.txt", "checks.txt"):
         path = target / "Archipelago" / name

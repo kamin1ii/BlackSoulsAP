@@ -6,28 +6,51 @@ import struct
 import zlib
 from pathlib import Path
 
-SCRIPTS_NAME = "Data/ScriptsAP.rvdata2"
+SCRIPTS_NAME = "Data/Scripts.rvdata2"
 MOD_SCRIPT_TITLE = "Archipelago"
 
 
-def read_archive_file(archive: Path, wanted: str) -> bytes:
+def read_archive(archive: Path):
     with open(archive, "rb") as f:
         raw = f.read()
     if raw[:8] != b"RGSSAD\x00\x03":
         raise ValueError("Game.rgss3a is not an RGSS3 archive")
-    key = (struct.unpack_from("<I", raw, 8)[0] * 9 + 3) & 0xFFFFFFFF
+    seed = struct.unpack_from("<I", raw, 8)[0]
+    key = (seed * 9 + 3) & 0xFFFFFFFF
+    kb = struct.pack("<I", key)
+    entries = []
     pos = 12
     while True:
         offset, size, file_key, name_len = (v ^ key for v in struct.unpack_from("<4I", raw, pos))
         pos += 16
         if offset == 0:
             break
-        kb = struct.pack("<I", key)
-        name = bytes(b ^ kb[i % 4] for i, b in enumerate(raw[pos:pos + name_len])).decode("utf-8")
+        name = bytes(b ^ kb[i % 4] for i, b in enumerate(raw[pos:pos + name_len]))
         pos += name_len
-        if name.replace("\\", "/") == wanted:
-            return decrypt(raw[offset:offset + size], file_key)
+        entries.append([name, file_key, raw[offset:offset + size]])
+    return seed, entries
+
+
+def read_archive_file(archive: Path, wanted: str) -> bytes:
+    for name, file_key, blob in read_archive(archive)[1]:
+        if name.decode("utf-8").replace("\\", "/") == wanted:
+            return decrypt(blob, file_key)
     raise FileNotFoundError(wanted)
+
+
+def write_archive(path: Path, seed: int, entries) -> None:
+    key = (seed * 9 + 3) & 0xFFFFFFFF
+    kb = struct.pack("<I", key)
+    offset = 12 + sum(16 + len(name) for name, _, _ in entries) + 16
+    with open(path, "wb") as f:
+        f.write(b"RGSSAD\x00\x03" + struct.pack("<I", seed))
+        for name, file_key, blob in entries:
+            f.write(struct.pack("<4I", offset ^ key, len(blob) ^ key, file_key ^ key, len(name) ^ key))
+            f.write(bytes(b ^ kb[i % 4] for i, b in enumerate(name)))
+            offset += len(blob)
+        f.write(struct.pack("<4I", key, key, key, key))
+        for _, _, blob in entries:
+            f.write(blob)
 
 
 def decrypt(data: bytes, key: int) -> bytes:
@@ -150,7 +173,7 @@ def find_game_root(folder: Path) -> Path:
     for child in folder.iterdir():
         if child.is_dir() and (child / "Game.rgss3a").exists():
             return child
-    raise FileNotFoundError(f"No Game.rgss3a found in {folder}, only the English 2019 release is supported so far")
+    raise FileNotFoundError(f"No Game.rgss3a found in {folder}, point /install at the folder that holds Game.exe and Game.rgss3a")
 
 
 def game_version(folder: Path) -> int:
@@ -172,14 +195,20 @@ def patch_game(source: Path, target: Path, mod_source: str, copy: bool = True) -
         shutil.copytree(source, target, ignore=skip, dirs_exist_ok=True)
     else:
         target = source
-    original = read_archive_file(target / "Game.rgss3a", "Data/Scripts.rvdata2")
-    (target / "Data").mkdir(exist_ok=True)
-    (target / SCRIPTS_NAME).write_bytes(build_scripts(original, mod_source))
-    ini = target / "Game.ini"
-    lines = ini.read_text(encoding="utf-8", errors="replace").splitlines()
-    lines = [("scripts =" + SCRIPTS_NAME.replace("/", "\\")) if l.lower().replace(" ", "").startswith("scripts=") else l
-             for l in lines]
-    ini.write_bytes(("\r\n".join(lines) + "\r\n").encode("utf-8"))
+    seed, entries = read_archive(source / "Game.rgss3a")
+    for entry in entries:
+        name, file_key, blob = entry
+        if name.decode("utf-8").replace("\\", "/") == SCRIPTS_NAME:
+            entry[2] = decrypt(build_scripts(decrypt(blob, file_key), mod_source), file_key)
+            break
+    else:
+        raise FileNotFoundError(SCRIPTS_NAME)
+    write_archive(target / "Game.rgss3a.tmp", seed, entries)
+    os.replace(target / "Game.rgss3a.tmp", target / "Game.rgss3a")
+    shutil.copy2(source / "Game.ini", target / "Game.ini")
+    leftover = target / "Data" / "ScriptsAP.rvdata2"
+    if leftover.exists():
+        os.remove(leftover)
     (target / "Archipelago").mkdir(exist_ok=True)
     for name in ("session.txt", "inbox.txt", "checks.txt"):
         path = target / "Archipelago" / name

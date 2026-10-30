@@ -146,6 +146,8 @@ class BlackSoulsWorld(World):
                 entrance.access_rule = lambda state, item=rule: state.has(item, self.player)
 
         for loc in PICKUPS:
+            if self.is_vanilla(loc):
+                continue
             region = regions[loc["area"]]
             location = BlackSoulsLocation(self.player, loc["name"], location_ids[loc["name"]], region)
             if loc["key_door"]:
@@ -169,11 +171,10 @@ class BlackSoulsWorld(World):
         goal_region.locations.append(ending)
         self.multiworld.regions += regions.values()
 
-        if goal == self.options.goal.option_ending_c:
-            for loc in PICKUPS:
-                if loc["kind"] == "item" and loc["id"] in BOOK_IDS:
-                    name = ITEM_ROWS_BY_KEY[(loc["kind"], loc["id"], loc["amount"])]
-                    self.get_location(loc["name"]).place_locked_item(self.create_item(name))
+    def is_vanilla(self, loc: Dict[str, Any]) -> bool:
+        if loc["kind"] != "item" or loc["id"] not in BOOK_IDS:
+            return False
+        return not self.options.randomize_fairy_tale_books or self.options.goal == self.options.goal.option_ending_c
 
     def create_item(self, name: str) -> BlackSoulsItem:
         row = ITEM_ROWS[name]
@@ -185,7 +186,7 @@ class BlackSoulsWorld(World):
         pool: List[BlackSoulsItem] = []
         have_key = False
         for loc in PICKUPS:
-            if self.get_location(loc["name"]).item:
+            if self.is_vanilla(loc):
                 continue
             name = ITEM_ROWS_BY_KEY[(loc["kind"], loc["id"], loc["amount"])]
             item = self.create_item(name)

@@ -1,0 +1,7 @@
+extracted/
+_ap/
+_tools/
+.venv/
+build/
+*.log
+__pycache__/

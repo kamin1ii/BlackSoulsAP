@@ -6582,5 +6582,167 @@
 "quest": false,
 "key_door": false,
 "name": "Rotten Burg - Succubus Fluids"
+},
+{
+"key": "98:4:0:1",
+"area": "Fort Ivern",
+"kind": "item",
+"id": 20,
+"amount": 1,
+"item": "Invisibility Powder",
+"quest": false,
+"key_door": true,
+"name": "Fort Ivern - Prologue Invisibility Powder",
+"mirror": {
+"map": 2,
+"x": 40,
+"y": 5,
+"src_map": 98,
+"src_event": 4
+}
+},
+{
+"key": "98:5:0:1",
+"area": "Fort Ivern",
+"kind": "item",
+"id": 35,
+"amount": 1,
+"item": "Fading Soul",
+"quest": false,
+"key_door": true,
+"name": "Fort Ivern - Prologue Fading Soul",
+"mirror": {
+"map": 2,
+"x": 21,
+"y": 30,
+"src_map": 98,
+"src_event": 5
+}
+},
+{
+"key": "98:22:0:1",
+"area": "Fort Ivern",
+"kind": "item",
+"id": 9,
+"amount": 1,
+"item": "Green Soul",
+"quest": false,
+"key_door": true,
+"name": "Fort Ivern - Prologue Green Soul",
+"mirror": {
+"map": 2,
+"x": 34,
+"y": 5,
+"src_map": 98,
+"src_event": 22
+}
+},
+{
+"key": "98:24:0:1",
+"area": "Fort Ivern",
+"kind": "item",
+"id": 11,
+"amount": 1,
+"item": "Red Soul",
+"quest": false,
+"key_door": true,
+"name": "Fort Ivern - Prologue Red Soul",
+"mirror": {
+"map": 2,
+"x": 50,
+"y": 5,
+"src_map": 98,
+"src_event": 24
+}
+},
+{
+"key": "98:25:0:1",
+"area": "Fort Ivern",
+"kind": "item",
+"id": 10,
+"amount": 1,
+"item": "Purple Soul",
+"quest": false,
+"key_door": true,
+"name": "Fort Ivern - Prologue Purple Soul",
+"mirror": {
+"map": 2,
+"x": 20,
+"y": 5,
+"src_map": 98,
+"src_event": 25
+}
+},
+{
+"key": "99:16:0:1",
+"area": "Fort Ivern",
+"kind": "item",
+"id": 3,
+"amount": 1,
+"item": "Medical Herb",
+"quest": false,
+"key_door": false,
+"name": "Fort Ivern - Prologue Medical Herb",
+"mirror": {
+"map": 6,
+"x": 1,
+"y": 63,
+"src_map": 99,
+"src_event": 16
+}
+},
+{
+"key": "99:17:0:1",
+"area": "Fort Ivern",
+"kind": "item",
+"id": 3,
+"amount": 1,
+"item": "Medical Herb",
+"quest": false,
+"key_door": false,
+"name": "Fort Ivern - Prologue Medical Herb 2",
+"mirror": {
+"map": 6,
+"x": 2,
+"y": 45,
+"src_map": 99,
+"src_event": 17
+}
+},
+{
+"key": "99:18:0:1",
+"area": "Fort Ivern",
+"kind": "item",
+"id": 33,
+"amount": 1,
+"item": "Frigid Pine Resin",
+"quest": false,
+"key_door": false,
+"name": "Fort Ivern - Prologue Frigid Pine Resin",
+"mirror": {
+"map": 6,
+"x": 62,
+"y": 67,
+"src_map": 99,
+"src_event": 18
+}
+},
+{
+"key": "99:19:0:1",
+"area": "Fort Ivern",
+"kind": "item",
+"id": 12,
+"amount": 1,
+"item": "Blue Soul",
+"quest": false,
+"key_door": false,
+"name": "Fort Ivern - Prologue Blue Soul",
+"mirror": {
+"map": 6,
+"x": 26,
+"y": 40,
+"src_map": 99,
+"src_event": 19
+}
 }
 ]

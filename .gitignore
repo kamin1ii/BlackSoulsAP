@@ -11,3 +11,6 @@ extracted_steam/
 goals/
 goals_out/
 tracker/
+_mk/
+bs2out/
+bs2test/

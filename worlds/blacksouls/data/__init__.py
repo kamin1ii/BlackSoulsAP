@@ -9,3 +9,4 @@ def _load(name: str):
 LOCATIONS = _load("locations.json")
 BOSSES = _load("bosses.json")
 ITEMS = _load("items.json")
+ENEMIES = _load("enemies.json")

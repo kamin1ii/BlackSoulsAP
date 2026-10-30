@@ -5,3 +5,5 @@ _tools/
 build/
 *.log
 __pycache__/
+solo/
+solo_out/

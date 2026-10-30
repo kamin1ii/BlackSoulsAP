@@ -12,6 +12,8 @@ BASE_ID = 7_710_000
 MASTER_KEY = "Master Key"
 INVITATION = "Invitation to Atlantica"
 VICTORY = "Victory"
+ENDING_LOCATION = "Reach the Chosen Ending"
+BOOK_IDS = range(273, 305)
 PRINCESS_AREAS = ["Tainted Bog", "Atlantica", "Gothel's Tower", "Garden of Snow"]
 
 # area, parent area, item needed
@@ -51,8 +53,7 @@ CONNECTIONS = [
 ]
 
 PICKUPS = LOCATIONS
-BOSS_CHECKS = [b for b in BOSSES if not b["goal"]]
-GOAL_BOSS = next(b for b in BOSSES if b["goal"])
+BOSS_CHECKS = BOSSES
 
 location_ids: Dict[str, int] = {}
 for i, loc in enumerate(PICKUPS):
@@ -62,7 +63,8 @@ for i, boss in enumerate(BOSS_CHECKS):
 
 item_ids: Dict[str, int] = {row["name"]: BASE_ID + i for i, row in enumerate(ITEMS)}
 ITEM_ROWS = {row["name"]: row for row in ITEMS}
-FILLER = [row["name"] for row in ITEMS if row["cls"] == "filler" and row["kind"] == "item"]
+FILLER = [row["name"] for row in ITEMS
+          if row["cls"] == "filler" and row["kind"] == "item" and row["id"] not in BOOK_IDS]
 
 
 def run_client(*args: str) -> None:
@@ -155,11 +157,23 @@ class BlackSoulsWorld(World):
             region = regions[boss["area"]]
             region.locations.append(BlackSoulsLocation(self.player, boss["name"], location_ids[boss["name"]], region))
 
-        goal_region = regions[GOAL_BOSS["area"]]
-        goal = BlackSoulsLocation(self.player, GOAL_BOSS["name"], None, goal_region)
-        goal.place_locked_item(BlackSoulsItem(VICTORY, ItemClassification.progression, None, self.player))
-        goal_region.locations.append(goal)
+        goal = self.options.goal.value
+        if goal in (self.options.goal.option_ending_c, self.options.goal.option_ending_d):
+            goal_region = regions["Menu"]
+            ending = BlackSoulsLocation(self.player, ENDING_LOCATION, None, goal_region)
+            ending.access_rule = lambda state: all(state.can_reach_region(r, self.player) for r in regions)
+        else:
+            goal_region = regions["Lost Empire"]
+            ending = BlackSoulsLocation(self.player, ENDING_LOCATION, None, goal_region)
+        ending.place_locked_item(BlackSoulsItem(VICTORY, ItemClassification.progression, None, self.player))
+        goal_region.locations.append(ending)
         self.multiworld.regions += regions.values()
+
+        if goal == self.options.goal.option_ending_c:
+            for loc in PICKUPS:
+                if loc["kind"] == "item" and loc["id"] in BOOK_IDS:
+                    name = ITEM_ROWS_BY_KEY[(loc["kind"], loc["id"], loc["amount"])]
+                    self.get_location(loc["name"]).place_locked_item(self.create_item(name))
 
     def create_item(self, name: str) -> BlackSoulsItem:
         row = ITEM_ROWS[name]
@@ -171,6 +185,8 @@ class BlackSoulsWorld(World):
         pool: List[BlackSoulsItem] = []
         have_key = False
         for loc in PICKUPS:
+            if self.get_location(loc["name"]).item:
+                continue
             name = ITEM_ROWS_BY_KEY[(loc["kind"], loc["id"], loc["amount"])]
             item = self.create_item(name)
             if name == MASTER_KEY:
@@ -190,6 +206,7 @@ class BlackSoulsWorld(World):
 
     def fill_slot_data(self) -> Dict[str, Any]:
         return {
+            "goal": self.options.goal.value,
             "boss_swaps": self.boss_swaps,
             "enemy_swaps": self.enemy_swaps,
             "boss_shuffle": bool(self.options.boss_shuffle),

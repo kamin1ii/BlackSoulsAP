@@ -1,6 +1,21 @@
 from dataclasses import dataclass
 
-from Options import DefaultOnToggle, PerGameCommonOptions, StartInventoryPool
+from Options import Choice, DefaultOnToggle, PerGameCommonOptions, StartInventoryPool
+
+
+class Goal(Choice):
+    """Which ending finishes your game.
+    Any Ending counts whichever ending you reach first.
+    Ending A and Ending B are reached by defeating Cinderella in the Lost Empire.
+    Ending C is the fairy-tale book route through Alice's Library. Fairy-tale books stay in their normal spots.
+    Ending D is the route through Kun-Yan."""
+    display_name = "Goal"
+    option_any_ending = 0
+    option_ending_a = 1
+    option_ending_b = 2
+    option_ending_c = 3
+    option_ending_d = 4
+    default = 0
 
 
 class BossShuffle(DefaultOnToggle):
@@ -21,6 +36,7 @@ class EnemyShuffle(DefaultOnToggle):
 @dataclass
 class BlackSoulsOptions(PerGameCommonOptions):
     start_inventory_from_pool: StartInventoryPool
+    goal: Goal
     boss_shuffle: BossShuffle
     boss_scaling: BossScaling
     enemy_shuffle: EnemyShuffle

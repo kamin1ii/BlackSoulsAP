@@ -7,8 +7,8 @@ module BSAP
   INBOX = DIR + "/inbox.txt"
   CHECKS = DIR + "/checks.txt"
   MASTER_KEY = 47
-  GOAL_SWITCH = 180
-  GOAL_TROOPS = [161, 315]
+  ENDINGS = { 442 => "A", 443 => "B", 444 => "C", 456 => "D" }
+  SECOND_FIGHTS = { 315 => 161 }
 
   @locs = {}
   @scouts = {}
@@ -136,9 +136,7 @@ module BSAP
   def self.update_map
     refresh_session
     return unless active?
-    if $game_switches[GOAL_SWITCH]
-      check("goal")
-    end
+    ENDINGS.each { |id, letter| check("ending:" + letter) if $game_switches[id] }
     return if $game_map.interpreter.running? || $game_message.busy?
     shown = 0
     pending_items.each do |f|
@@ -147,6 +145,15 @@ module BSAP
       $game_system.bsap_received = f[0].to_i + 1
       shown += 1
     end
+  end
+end
+
+class Game_Switches
+  alias bsap_set []=
+  def []=(switch_id, value)
+    bsap_set(switch_id, value)
+    letter = BSAP::ENDINGS[switch_id]
+    BSAP.check("ending:" + letter) if value && letter && BSAP.active?
   end
 end
 
@@ -260,9 +267,9 @@ module BattleManager
     alias bsap_process_victory process_victory
     def process_victory
       troop = $game_temp.bsap_troop
-      if troop && BSAP.active?
-        BSAP.check("boss:#{troop}") if BSAP.boss_check?(troop)
-        BSAP.check("goal") if BSAP::GOAL_TROOPS.include?(troop)
+      troop = BSAP::SECOND_FIGHTS[troop] || troop if troop
+      if troop && BSAP.active? && BSAP.boss_check?(troop)
+        BSAP.check("boss:#{troop}")
       end
       bsap_process_victory
     end

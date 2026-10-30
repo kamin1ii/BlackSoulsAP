@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Choice, DefaultOnToggle, PerGameCommonOptions, StartInventoryPool
+from Options import Choice, DefaultOnToggle, Toggle, PerGameCommonOptions, StartInventoryPool
 
 
 class Goal(Choice):
@@ -16,6 +16,12 @@ class Goal(Choice):
     option_ending_c = 3
     option_ending_d = 4
     default = 0
+
+
+class RandomizeFairyTaleBooks(Toggle):
+    """Shuffle the fairy-tale books into the item pool. When off, every book stays where the normal game gives it,
+    from fairy-tale bosses and story events, and those spots are not checks. Ending C always keeps them in place."""
+    display_name = "Randomize Fairy-Tale Books"
 
 
 class BossShuffle(DefaultOnToggle):
@@ -37,6 +43,7 @@ class EnemyShuffle(DefaultOnToggle):
 class BlackSoulsOptions(PerGameCommonOptions):
     start_inventory_from_pool: StartInventoryPool
     goal: Goal
+    randomize_fairy_tale_books: RandomizeFairyTaleBooks
     boss_shuffle: BossShuffle
     boss_scaling: BossScaling
     enemy_shuffle: EnemyShuffle

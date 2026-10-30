@@ -192,8 +192,17 @@ for r in item_rows:
     if seen[r["name"]] > 1:
         r["name"] = f"{r['name']} ({r['kind']})"
 
+# prologue only groups, the hare knight miniboss and centaur groups that flip switches
+SKIP_ENEMY_TROOPS = {1, 2, 3, 4, 5, 47, 48, 73}
+encounter_troops = set()
+for mid in MAP_AREA:
+    for enc in load(DATA / f"Map{mid:03d}.rvdata2")["encounter_list"] or []:
+        encounter_troops.add(enc["troop_id"])
+enemy_rows = [dict(troop=tid, **troop_stats(tid)) for tid in sorted(encounter_troops - SKIP_ENEMY_TROOPS)]
+
 OUT.mkdir(parents=True, exist_ok=True)
-for fname, rows in (("locations.json", locations), ("bosses.json", bosses), ("items.json", item_rows)):
+for fname, rows in (("locations.json", locations), ("bosses.json", bosses), ("items.json", item_rows),
+                    ("enemies.json", enemy_rows)):
     (OUT / fname).write_text(json.dumps(rows, ensure_ascii=False, indent=0), encoding="utf-8")
 print(len(locations), "pickups", sum(l["quest"] for l in locations), "quest", len(bosses), "bosses",
       len(item_rows), "item types")

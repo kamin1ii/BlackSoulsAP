@@ -35,3 +35,16 @@ save the yaml. Give the yaml to whoever is hosting the game.
 
 If the client was closed while you played, connect it again. Everything you found in the
 meantime is sent as soon as you reach a map.
+
+## Play without the client
+
+`/install` also puts `Game_Archipelago.exe` in the same folder. It connects to the server by
+itself, so the client does not need to stay open.
+
+1. Connect the Black Souls Client once. It writes the server address and your name into
+   `archipelago.json` in the game folder. You can also edit that file by hand.
+2. Start `Game_Archipelago.exe` and begin a new game. A popup confirms the connection once you are
+   on a map.
+
+This runs the game on mkxp-z with the RPGMaker VX Ace AP kit by EggSlashEther. The original
+`Game.exe` still works with the client as before.

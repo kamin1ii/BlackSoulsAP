@@ -7,3 +7,4 @@ build/
 __pycache__/
 solo/
 solo_out/
+extracted_steam/

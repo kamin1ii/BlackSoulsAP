@@ -13,11 +13,11 @@ from . import BOSS_CHECKS, GAME, ITEMS, PICKUPS, location_ids
 from .patcher import game_version, patch_game
 
 STORE_KEY = "black_souls"
-KNOWN_VERSIONS = {88934994}
+KNOWN_VERSIONS = {88934994, 12204037}
 ITEM_BY_ID = {7_710_000 + i: row for i, row in enumerate(ITEMS)}
-KEY_TO_ID = {loc["key"]: location_ids[loc["name"]] for loc in PICKUPS}
+KEY_TO_ID = {key: location_ids[loc["name"]] for loc in PICKUPS for key in [loc["key"], *loc.get("alt_keys", [])]}
 KEY_TO_ID.update({f"boss:{b['troop']}": location_ids[b["name"]] for b in BOSS_CHECKS})
-ID_TO_KEY = {v: k for k, v in KEY_TO_ID.items()}
+ALL_LOCATION_IDS = sorted(set(KEY_TO_ID.values()))
 
 
 def write_atomic(path: Path, text: str) -> None:
@@ -103,7 +103,7 @@ class BlackSoulsContext(CommonContext):
             self.inbox_count = -1
             if not self.game_dir:
                 logger.info("Run /install <path to your BLACK SOULS folder> to make the Archipelago copy of the game")
-            asyncio.create_task(self.send_msgs([{"cmd": "LocationScouts", "locations": list(ID_TO_KEY), "create_as_hint": 0}]))
+            asyncio.create_task(self.send_msgs([{"cmd": "LocationScouts", "locations": ALL_LOCATION_IDS, "create_as_hint": 0}]))
             self.write_session()
         elif cmd == "LocationInfo":
             for item in (NetworkItem(*i) for i in args["locations"]):

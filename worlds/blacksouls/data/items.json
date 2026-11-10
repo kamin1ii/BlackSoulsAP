@@ -1265,5 +1265,131 @@
 "id": 136,
 "amount": 1,
 "cls": "useful"
+},
+{
+"name": "Fairy-tale [King's New Clothes]",
+"kind": "item",
+"id": 275,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Knight in Armor]",
+"kind": "item",
+"id": 276,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Dog of Elixir]",
+"kind": "item",
+"id": 277,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Singing Bone]",
+"kind": "item",
+"id": 278,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Pied Piper of Elixir]",
+"kind": "item",
+"id": 279,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Musicians of Bremen]",
+"kind": "item",
+"id": 280,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Ugly Duckling]",
+"kind": "item",
+"id": 281,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Jack and Beanstalk]",
+"kind": "item",
+"id": 282,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Peter Pan]",
+"kind": "item",
+"id": 283,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Adventures of Sinbad]",
+"kind": "item",
+"id": 284,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Alladin and Wonderful Lamp]",
+"kind": "item",
+"id": 285,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [King with Donkey Ears]",
+"kind": "item",
+"id": 286,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Iron Hans]",
+"kind": "item",
+"id": 287,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Pinocchio]",
+"kind": "item",
+"id": 296,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Princess Frog]",
+"kind": "item",
+"id": 298,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Little Mermaid]",
+"kind": "item",
+"id": 299,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [Cinderella]",
+"kind": "item",
+"id": 301,
+"amount": 1,
+"cls": "filler"
+},
+{
+"name": "Fairy-tale [North Wind and Sun]",
+"kind": "item",
+"id": 303,
+"amount": 1,
+"cls": "filler"
 }
 ]

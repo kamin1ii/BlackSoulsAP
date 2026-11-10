@@ -184,6 +184,10 @@ for kind, gid, amount in sorted(pool, key=lambda k: (kinds.index(k[0]), k[1], k[
     else:
         cls = "filler"
     item_rows.append(dict(name=name, kind=kind, id=gid, amount=amount, cls=cls))
+# books only bosses drop come last so the ids of everything above stay the same
+for gid in range(273, 305):
+    if not any(r["kind"] == "item" and r["id"] == gid for r in item_rows):
+        item_rows.append(dict(name=clean(items[gid]["name"]), kind="item", id=gid, amount=1, cls="filler"))
 seen = Counter(r["name"] for r in item_rows)
 for r in item_rows:
     if seen[r["name"]] > 1:

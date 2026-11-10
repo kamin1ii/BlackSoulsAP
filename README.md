@@ -8,6 +8,8 @@ An [Archipelago](https://archipelago.gg) world for BLACK SOULS (RPG Maker VX Ace
 - Pick which ending counts as your goal (any ending, or A, B, C or D)
 - Optional enemy shuffle
 
+Much of the code is borrowed from or built on my standalone [BLACK SOULS Randomizer](https://github.com/kamin1ii/BlackSoulsRandomizer). The boss, enemy, princess and companion shuffles all run on its engine.
+
 No game files are included. The client patches a copy of your own install.
 
 ## Playing
@@ -31,10 +33,12 @@ The full guide is in [worlds/blacksouls/docs/setup_en.md](worlds/blacksouls/docs
 - `worlds/blacksouls` is the apworld source
 - `worlds/blacksouls/game/ap.rb` is the script injected into the game
 - `worlds/blacksouls/game/ap_net.rb` is the direct connection used by `Game_Archipelago.exe`
+- `worlds/blacksouls/game/rando_core.rb` and `rando_data.rb` are the randomizer's engine, copied over by `tools/sync_rando.py`
 - `tools` holds the scripts used to read the game data, build the location tables and build the tracker
 
 ## Credits
 
+- The shuffle engine and boss scaling come from [BLACK SOULS Randomizer](https://github.com/kamin1ii/BlackSoulsRandomizer)
 - Direct connection uses [RPGMaker VX Ace AP](https://github.com/EggSlashEther/RPGMaker-VX-Ace-AP) and [archipelago_rb](https://github.com/EggSlashEther/archipelago_rb) by EggSlashEther (MIT). `/install` downloads them from the original repo, and their license ships next to the game as `LICENSE RPGMaker-VX-Ace-AP.txt`
 - `Game_Archipelago.exe` is [mkxp-z](https://github.com/mkxp-z/mkxp-z) (GPL-2.0), as included in the kit above
 - The direct connection idea comes from the Black Souls 2 Archipelago mod by CthulhusShoes

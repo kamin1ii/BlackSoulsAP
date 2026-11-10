@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Set
 
 from BaseClasses import Item, ItemClassification, Location, LocationProgressType, Region, Tutorial
 from worlds.AutoWorld import WebWorld, World
@@ -15,8 +15,22 @@ VICTORY = "Victory"
 ENDING_LOCATION = "Reach the Chosen Ending"
 BOOK_IDS = range(273, 305)
 PRINCESS_AREAS = ["Tainted Bog", "Atlantica", "Gothel's Tower", "Garden of Snow"]
+# in the order the game script uses, Frog, Rapunzel, Snow White, Little Mermaid
+PRINCESS_ROOMS = [
+    ("Tainted Bog", 82, 44, 156),
+    ("Gothel's Tower", 66, 5, 157),
+    ("Garden of Snow", 53, 5, 158),
+    ("Atlantica", 76, 43, 159),
+]
+SKIP_AREAS = {
+    "skip_kun_yan": {"Kun-Yan"},
+    "skip_lost_empire": {"Lost Empire"},
+    "skip_atlantica": {"Atlantica", "Atlantica Locked House", "Hotel Poseidon", "Hotel Poseidon Locked Room"},
+}
+# Master Key, Magical Mirror, Desert Rose, Anti-Fairy, Invitation, Jeanne's Ashes, Alice's Ribbon, Black Ash
+UNIQUE_ITEM_IDS = {47, 23, 46, 51, 52, 55, 179, 181}
 
-# area, parent area, item needed
+# area, parent area, what the way in needs
 CONNECTIONS = [
     ("Holy Forest", "Menu", None),
     ("Watched River", "Holy Forest", None),
@@ -48,7 +62,7 @@ CONNECTIONS = [
     ("Hotel Poseidon Locked Room", "Hotel Poseidon", None),
     ("Wilhelm Bridge", "Graveyard Town Elixir", None),
     ("Secret Garden", "Wilhelm Bridge", None),
-    ("Tainted Bog", "Wilhelm Bridge", None),
+    ("Tainted Bog", "Wilhelm Bridge", "ivern"),
     ("Kun-Yan", "Tainted Bog", None),
 ]
 
@@ -63,8 +77,20 @@ for i, boss in enumerate(BOSS_CHECKS):
 
 item_ids: Dict[str, int] = {row["name"]: BASE_ID + i for i, row in enumerate(ITEMS)}
 ITEM_ROWS = {row["name"]: row for row in ITEMS}
+ITEM_ROWS_BY_KEY = {(row["kind"], row["id"], row["amount"]): row["name"] for row in ITEMS}
+BOOK_NAMES = [row["name"] for row in ITEMS if row["kind"] == "item" and row["id"] in BOOK_IDS]
 FILLER = [row["name"] for row in ITEMS
           if row["cls"] == "filler" and row["kind"] == "item" and row["id"] not in BOOK_IDS]
+
+
+def is_book(loc: Dict[str, Any]) -> bool:
+    return loc["kind"] == "item" and loc["id"] in BOOK_IDS
+
+
+def is_unique(loc: Dict[str, Any]) -> bool:
+    if loc["kind"] != "item":
+        return True
+    return loc["id"] in UNIQUE_ITEM_IDS or loc["id"] in BOOK_IDS or loc["item"].startswith(("Sorcery", "Miracle"))
 
 
 def run_client(*args: str) -> None:
@@ -97,9 +123,9 @@ class BlackSoulsWeb(WebWorld):
 
 class BlackSoulsWorld(World):
     """
-    BLACK SOULS is a dark fairy-tale RPG made in RPG Maker VX Ace. Items found in chests and on
-    the ground are shuffled across the multiworld, every boss kill is a check, and bosses can be
-    shuffled between arenas.
+    BLACK SOULS is a dark fairytale RPG made in RPG Maker VX Ace. Items found in chests and on
+    the ground are shuffled across the multiworld, every boss kill is a check, and bosses, princesses
+    and companions can be shuffled the way the standalone randomizer does it.
     """
     game = GAME
     web = BlackSoulsWeb()
@@ -107,29 +133,54 @@ class BlackSoulsWorld(World):
     options: BlackSoulsOptions
     location_name_to_id = location_ids
     item_name_to_id = item_ids
-    item_name_groups = {"Key Items": {MASTER_KEY, INVITATION}}
+    item_name_groups = {"Key Items": {MASTER_KEY, INVITATION}, "Fairytale Books": set(BOOK_NAMES)}
 
     def generate_early(self) -> None:
-        self.boss_swaps: List[List[Any]] = []
-        self.enemy_swaps: List[List[Any]] = []
-        if self.options.boss_shuffle:
-            self.boss_swaps = self.shuffle_troops([b for b in BOSSES if b["shuffle"]], bool(self.options.boss_scaling))
-        if self.options.enemy_shuffle:
-            self.enemy_swaps = self.shuffle_troops(ENEMIES, True)
+        self.books_shuffled = bool(self.options.randomize_fairy_tale_books) or \
+            self.options.goal == self.options.goal.option_ending_c
+        self.rando_seed = self.random.randrange(100_000_000)
+        self.rooms = [0, 1, 2, 3]
+        if self.options.shuffle_princesses:
+            self.random.shuffle(self.rooms)
+        self.skipped: Set[str] = set()
+        for option, areas in SKIP_AREAS.items():
+            if getattr(self.options, option):
+                self.skipped |= areas
+        self.real_pickups = self.pick_pickups()
+        self.real_bosses = [b for b in BOSS_CHECKS if self.boss_area(b) not in self.skipped]
 
-    def shuffle_troops(self, pool: List[Dict[str, Any]], scale: bool) -> List[List[Any]]:
-        placed = pool[:]
-        self.random.shuffle(placed)
-        swaps = []
-        for slot, troop in zip(pool, placed):
-            if slot["troop"] == troop["troop"]:
+    def princess_room_area(self, princess: int) -> str:
+        return PRINCESS_ROOMS[self.rooms.index(princess)][0]
+
+    # a pickup inside a princess event moves with her
+    def pickup_area(self, loc: Dict[str, Any]) -> str:
+        map_id, event_id = (int(x) for x in loc["key"].split(":")[:2])
+        for i, (_area, home_map, home_event, _troop) in enumerate(PRINCESS_ROOMS):
+            if (map_id, event_id) == (home_map, home_event):
+                return self.princess_room_area(i)
+        return loc["area"]
+
+    def boss_area(self, boss: Dict[str, Any]) -> str:
+        for i, room in enumerate(PRINCESS_ROOMS):
+            if boss["troop"] == room[3]:
+                return self.princess_room_area(i)
+        return boss["area"]
+
+    def pick_pickups(self) -> List[Dict[str, Any]]:
+        open_spots = [loc for loc in PICKUPS
+                      if self.pickup_area(loc) not in self.skipped and (self.books_shuffled or not is_book(loc))]
+        if not self.options.unique_checks_only:
+            return open_spots
+        chosen: Dict[Any, Dict[str, Any]] = {}
+        for loc in open_spots:
+            if not is_unique(loc):
                 continue
-            hp, atk = 1.0, 1.0
-            if scale:
-                hp = max(0.05, min(20.0, slot["hp"] / troop["hp"]))
-                atk = max(0.1, min(10.0, slot["atk"] / troop["atk"]))
-            swaps.append([slot["troop"], troop["troop"], round(hp, 4), round(atk, 4)])
-        return swaps
+            item = (loc["kind"], loc["id"])
+            # a spot without a story choice in front of it wins over one with
+            if item not in chosen or (chosen[item]["quest"] and not loc["quest"]):
+                chosen[item] = loc
+        picked = {id(loc) for loc in chosen.values()}
+        return [loc for loc in open_spots if id(loc) in picked]
 
     def create_regions(self) -> None:
         regions = {"Menu": Region("Menu", self.player, self.multiworld)}
@@ -142,23 +193,29 @@ class BlackSoulsWorld(World):
                     state.can_reach_region(a, self.player) for a in PRINCESS_AREAS)
                 for a in PRINCESS_AREAS:
                     self.multiworld.register_indirect_condition(regions[a], entrance)
+            elif rule == "ivern":
+                entrance.access_rule = lambda state: state.can_reach_region("Fort Ivern", self.player)
+                self.multiworld.register_indirect_condition(regions["Fort Ivern"], entrance)
             elif rule:
                 entrance.access_rule = lambda state, item=rule: state.has(item, self.player)
 
-        for loc in PICKUPS:
-            if self.is_vanilla(loc):
-                continue
-            region = regions[loc["area"]]
+        for loc in self.real_pickups:
+            region = regions[self.pickup_area(loc)]
             location = BlackSoulsLocation(self.player, loc["name"], location_ids[loc["name"]], region)
             if loc["quest"]:
                 location.progress_type = LocationProgressType.EXCLUDED
             region.locations.append(location)
-        for boss in BOSS_CHECKS:
-            region = regions[boss["area"]]
+        for boss in self.real_bosses:
+            region = regions[self.boss_area(boss)]
             region.locations.append(BlackSoulsLocation(self.player, boss["name"], location_ids[boss["name"]], region))
 
         goal = self.options.goal.value
-        if goal in (self.options.goal.option_ending_c, self.options.goal.option_ending_d):
+        if goal == self.options.goal.option_ending_c:
+            goal_region = regions["Alice's Library"]
+            ending = BlackSoulsLocation(self.player, ENDING_LOCATION, None, goal_region)
+            needed = self.options.fairy_tale_books_needed.value
+            ending.access_rule = lambda state: state.has_from_list(BOOK_NAMES, self.player, needed)
+        elif goal == self.options.goal.option_ending_d:
             goal_region = regions["Menu"]
             ending = BlackSoulsLocation(self.player, ENDING_LOCATION, None, goal_region)
             ending.access_rule = lambda state: all(state.can_reach_region(r, self.player) for r in regions)
@@ -169,27 +226,31 @@ class BlackSoulsWorld(World):
         goal_region.locations.append(ending)
         self.multiworld.regions += regions.values()
 
-    def is_vanilla(self, loc: Dict[str, Any]) -> bool:
-        if loc["kind"] != "item" or loc["id"] not in BOOK_IDS:
-            return False
-        return not self.options.randomize_fairy_tale_books or self.options.goal == self.options.goal.option_ending_c
-
     def create_item(self, name: str) -> BlackSoulsItem:
         row = ITEM_ROWS[name]
         cls = {"progression": ItemClassification.progression, "useful": ItemClassification.useful,
                "filler": ItemClassification.filler}[row["cls"]]
+        if row["kind"] == "item" and row["id"] in BOOK_IDS and self.options.goal == self.options.goal.option_ending_c:
+            cls = ItemClassification.progression
         return BlackSoulsItem(name, cls, item_ids[name], self.player)
 
     def create_items(self) -> None:
         pool: List[BlackSoulsItem] = []
-        for loc in PICKUPS:
-            if self.is_vanilla(loc):
+        for loc in self.real_pickups:
+            if is_book(loc):
                 continue
-            name = ITEM_ROWS_BY_KEY[(loc["kind"], loc["id"], loc["amount"])]
-            item = self.create_item(name)
-            pool.append(item)
-        for _ in BOSS_CHECKS:
+            pool.append(self.create_item(ITEM_ROWS_BY_KEY[(loc["kind"], loc["id"], loc["amount"])]))
+        # every book goes in once, wherever its normal spot ended up
+        if self.books_shuffled:
+            pool += [self.create_item(name) for name in BOOK_NAMES]
+        total = len(self.real_pickups) + len(self.real_bosses)
+        while len(pool) < total:
             pool.append(self.create_item(self.get_filler_item_name()))
+        spare = [i for i, item in enumerate(pool) if item.classification == ItemClassification.filler
+                 and item.name not in BOOK_NAMES]
+        self.random.shuffle(spare)
+        drop = set(spare[:len(pool) - total])
+        pool = [item for i, item in enumerate(pool) if i not in drop]
         self.multiworld.itempool += pool
 
     def set_rules(self) -> None:
@@ -199,14 +260,19 @@ class BlackSoulsWorld(World):
         return self.random.choice(FILLER)
 
     def fill_slot_data(self) -> Dict[str, Any]:
+        is_c = self.options.goal == self.options.goal.option_ending_c
         return {
             "goal": self.options.goal.value,
-            "boss_swaps": self.boss_swaps,
-            "enemy_swaps": self.enemy_swaps,
+            "books_shuffled": self.books_shuffled,
+            "books_needed": self.options.fairy_tale_books_needed.value if is_c else 32,
+            "rando_seed": self.rando_seed,
+            "rooms": self.rooms,
+            "shuffle_princesses": bool(self.options.shuffle_princesses),
+            "shuffle_companions": bool(self.options.shuffle_companions),
             "boss_shuffle": bool(self.options.boss_shuffle),
+            "special_boss_shuffle": bool(self.options.shuffle_special_bosses),
             "boss_scaling": bool(self.options.boss_scaling),
             "enemy_shuffle": bool(self.options.enemy_shuffle),
+            "shuffle_prologue": bool(self.options.shuffle_prologue),
+            "pause_menu_checklist": bool(self.options.pause_menu_checklist),
         }
-
-
-ITEM_ROWS_BY_KEY = {(row["kind"], row["id"], row["amount"]): row["name"] for row in ITEMS}

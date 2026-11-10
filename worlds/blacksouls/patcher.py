@@ -218,7 +218,8 @@ def patch_game(source: Path, target: Path, mod_source: str, copy: bool = True) -
         raise FileNotFoundError(SCRIPTS_NAME)
     write_archive(target / "Game.rgss3a.tmp", seed, entries)
     os.replace(target / "Game.rgss3a.tmp", target / "Game.rgss3a")
-    shutil.copy2(source / "Game.ini", target / "Game.ini")
+    if source.resolve() != target.resolve():
+        shutil.copy2(source / "Game.ini", target / "Game.ini")
     leftover = target / "Data" / "ScriptsAP.rvdata2"
     if leftover.exists():
         os.remove(leftover)

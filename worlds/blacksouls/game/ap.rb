@@ -7,14 +7,16 @@ module BSAP
   INBOX = DIR + "/inbox.txt"
   CHECKS = DIR + "/checks.txt"
   ENDINGS = { 442 => "A", 443 => "B", 444 => "C", 456 => "D" }
-  SECOND_FIGHTS = { 315 => 161 }
+  # a fight reached another way still counts for the boss of that arena
+  SECOND_FIGHTS = { 315 => 161, 310 => 136 }
+  SLOT_FIGHT_BASE = 10000
 
   @locs = {}
   @scouts = {}
-  @swaps = {}
-  @enemy_swaps = {}
   @mirrors = {}
   @boss_checks = {}
+  @server_done = {}
+  @opts = {}
   @seed = nil
   @session_mtime = nil
   @inbox_mtime = nil
@@ -51,10 +53,10 @@ module BSAP
     @session_mtime = m
     @locs = {}
     @scouts = {}
-    @swaps = {}
-    @enemy_swaps = {}
     @mirrors = {}
     @boss_checks = {}
+    @server_done = {}
+    @opts = {}
     lines.each do |line|
       f = line.split("\t")
       case f[0]
@@ -62,8 +64,8 @@ module BSAP
       when "loc" then @locs[f[1]] = true
       when "scout" then @scouts[f[1]] = f[2]
       when "boss" then @boss_checks[f[1].to_i] = true
-      when "swap" then @swaps[f[1].to_i] = [f[2].to_i, f[3].to_f, f[4].to_f]
-      when "eswap" then @enemy_swaps[f[1].to_i] = [f[2].to_i, f[3].to_f, f[4].to_f]
+      when "done" then @server_done[f[1]] = true
+      when "opt" then @opts[f[1]] = f[2].to_s
       when "mirror" then (@mirrors[f[1].to_i] ||= []) << [f[2].to_i, f[3].to_i, f[4].to_i, f[5].to_i, f[6]]
       end
     end
@@ -73,16 +75,17 @@ module BSAP
     @locs[key]
   end
 
+  # done here or already counted by the server, for example from another save
+  def self.done?(key)
+    @server_done[key] || ($game_system && $game_system.bsap_checked[key]) ? true : false
+  end
+
+  def self.set_server_done(keys)
+    keys.each { |k| @server_done[k] = true }
+  end
+
   def self.scout(key)
     @scouts[key]
-  end
-
-  def self.swap(troop_id)
-    @swaps[troop_id] || @enemy_swaps[troop_id]
-  end
-
-  def self.enemy_swap(troop_id)
-    @enemy_swaps[troop_id]
   end
 
   def self.mirrors(map_id)
@@ -181,7 +184,7 @@ class Game_System
 end
 
 class Game_Temp
-  attr_accessor :bsap_troop, :bsap_scale
+  attr_accessor :bsap_troop
 end
 
 class Game_Event
@@ -195,8 +198,11 @@ class Game_Interpreter
     return nil if @event_id.nil? || @event_id <= 0 || @map_id != $game_map.map_id
     ev = $game_map.events[@event_id]
     return nil unless ev
-    page = ev.bsap_rpg_event.pages.index { |pg| pg.list.equal?(@list) }
+    pages = ev.bsap_rpg_event.pages
+    page = pages.index { |pg| pg.list.equal?(@list) }
     return nil unless page
+    src = pages[page].instance_variable_get(:@bsap_src)
+    return "#{src}:#{@index}" if src
     "#{@map_id}:#{@event_id}:#{page}:#{@index}"
   end
 
@@ -227,20 +233,11 @@ class Game_Interpreter
     bsap_command_128
   end
 
+  # the arena is noted before the randomizer swaps who is fought there
   alias bsap_command_301 command_301
   def command_301
     unless $game_party.in_battle
-      $game_temp.bsap_troop = nil
-      $game_temp.bsap_scale = nil
-      if BSAP.active? && @params[0] == 0
-        $game_temp.bsap_troop = @params[1]
-        swap = BSAP.swap(@params[1])
-        if swap
-          @params = @params.dup
-          @params[1] = swap[0]
-          $game_temp.bsap_scale = [swap[1], swap[2]]
-        end
-      end
+      $game_temp.bsap_troop = BSAP.active? && @params[0] == 0 ? @params[1] % BSAP::SLOT_FIGHT_BASE : nil
     end
     bsap_command_301
   end
@@ -273,32 +270,6 @@ class Game_Map
   end
 end
 
-class Game_Player
-  alias bsap_make_encounter_troop_id make_encounter_troop_id
-  def make_encounter_troop_id
-    troop_id = bsap_make_encounter_troop_id
-    swap = BSAP.active? && BSAP.enemy_swap(troop_id)
-    return troop_id unless swap
-    $game_temp.bsap_troop = troop_id
-    $game_temp.bsap_scale = [swap[1], swap[2]]
-    swap[0]
-  end
-end
-
-class Game_Enemy
-  alias bsap_param_base param_base
-  def param_base(param_id)
-    value = bsap_param_base(param_id)
-    scale = $game_temp && $game_temp.bsap_scale
-    return value unless scale
-    case param_id
-    when 0 then [(value * scale[0]).to_i, 1].max
-    when 2, 3, 4, 5 then [(value * scale[1]).to_i, 1].max
-    else value
-    end
-  end
-end
-
 module BattleManager
   class << self
     alias bsap_process_victory process_victory
@@ -315,7 +286,6 @@ module BattleManager
     def battle_end(result)
       bsap_battle_end(result)
       $game_temp.bsap_troop = nil
-      $game_temp.bsap_scale = nil
     end
   end
 end

@@ -69,6 +69,7 @@ module BSAPNet
     @goal = ENDING_GOALS[slot_data["goal"].to_i]
     mirrors = @mirror_table.select { |m| @key_to_id[m[5]] && real[@key_to_id[m[5]]] }
     BSAP.load_net_session(@seed_name || "net", real, slot_data, @key_to_id, mirrors)
+    BSAP.set_server_done(msg["checked_locations"].flat_map { |id| @id_to_keys[id] || [] })
     @connected = true
     @need_sync = true
     @client.locations.scout(0, *real.keys)
@@ -147,16 +148,16 @@ module BSAP
         locs[key] = true
       end
     end
-    swaps = {}
-    (slot_data["boss_swaps"] || []).each { |s| swaps[s[0].to_i] = [s[1].to_i, s[2].to_f, s[3].to_f] }
-    enemy_swaps = {}
-    (slot_data["enemy_swaps"] || []).each { |s| enemy_swaps[s[0].to_i] = [s[1].to_i, s[2].to_f, s[3].to_f] }
+    opts = {}
+    slot_data.each do |k, v|
+      next if v.is_a?(Hash)
+      opts[k.to_s] = v.is_a?(Array) ? v.join(",") : v.to_s
+    end
     mirror_rows = {}
     mirrors.each { |m| (mirror_rows[m[0].to_i] ||= []) << [m[1].to_i, m[2].to_i, m[3].to_i, m[4].to_i, m[5]] }
     @locs = locs
     @boss_checks = bosses
-    @swaps = swaps
-    @enemy_swaps = enemy_swaps
+    @opts = opts
     @mirrors = mirror_rows
     @scouts ||= {}
     @seed = seed

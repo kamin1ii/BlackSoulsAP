@@ -12,7 +12,7 @@ from CommonClient import ClientCommandProcessor, CommonContext, get_base_parser,
 from MultiServer import mark_raw
 from NetUtils import ClientStatus, NetworkItem
 
-from . import BOSS_CHECKS, GAME, ITEMS, PICKUPS, location_ids
+from . import BOSS_CHECKS, CONNECTIONS, GAME, ITEMS, PICKUPS, location_ids
 from .patcher import DIRECT_EXE, KIT_URL, game_version, install_direct, patch_game
 
 STORE_KEY = "black_souls"
@@ -31,6 +31,43 @@ def write_atomic(path: Path, text: str) -> None:
 
 def clean(text: str) -> str:
     return text.replace("\t", " ").replace("\n", " ")
+
+
+def option_text(value) -> str:
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if isinstance(value, (list, tuple)):
+        return ",".join(option_text(v) for v in value)
+    return clean(str(value))
+
+
+def mod_source() -> str:
+    """The whole mod in load order, the randomizer engine first so the bridge wraps it."""
+    def part(name: str) -> str:
+        return pkgutil.get_data(__package__, f"game/{name}").decode("utf-8")
+    names = ("rando_data.rb", "rando_core.rb", "ap.rb", "ap_net.rb", "ap_rando.rb")
+    return "\n".join(part(n) for n in names) + "\n" + checklist_source() + "\n" + part("ap_checklist.rb")
+
+
+def ruby_string(text: str) -> str:
+    return '"' + text.replace("\\", "\\\\").replace('"', '\\"').replace("#", "\\#") + '"'
+
+
+def checklist_source() -> str:
+    """Every check as [keys, area, name] in route order, the game shows the ones in this slot."""
+    order = {area: i for i, (area, _parent, _rule) in enumerate(CONNECTIONS)}
+    rows = []
+    for loc in PICKUPS:
+        keys = [loc["key"], *loc.get("alt_keys", [])]
+        prefix = loc["area"] + " - "
+        name = loc["name"][len(prefix):] if loc["name"].startswith(prefix) else loc["name"]
+        rows.append((keys, loc["area"], name))
+    for boss in BOSS_CHECKS:
+        rows.append(([f"boss:{boss['troop']}"], boss["area"], boss["name"]))
+    rows.sort(key=lambda r: order.get(r[1], len(order)))
+    body = ",\n".join("  [[" + ", ".join(ruby_string(k) for k in keys) + "], " + ruby_string(area) + ", "
+                      + ruby_string(name) + "]" for keys, area, name in rows)
+    return "BSAP_CHECKLIST = [\n" + body + "\n]"
 
 
 def direct_data() -> Dict:
@@ -53,9 +90,7 @@ class BlackSoulsCommandProcessor(ClientCommandProcessor):
             if game_version(source) not in KNOWN_VERSIONS:
                 self.output("Warning, this game version is untested and some checks may not line up")
             self.output(f"Copying the game to {target}, this can take a minute")
-            mod = "\n".join(pkgutil.get_data(__package__, f"game/{name}").decode("utf-8")
-                            for name in ("ap.rb", "ap_net.rb"))
-            target = patch_game(source, target, mod)
+            target = patch_game(source, target, mod_source())
         except Exception as e:
             self.output(f"Install failed {e}")
             return False
@@ -161,14 +196,15 @@ class BlackSoulsContext(CommonContext):
                 lines.append(f"loc\t{key}")
             if loc_id in self.scouts:
                 lines.append(f"scout\t{key}\t{self.scouts[loc_id]}")
-        for arena, boss, hp, atk in self.slot_data.get("boss_swaps", []):
-            lines.append(f"swap\t{arena}\t{boss}\t{hp}\t{atk}")
+            if loc_id in self.checked_locations:
+                lines.append(f"done\t{key}")
+        for key, value in self.slot_data.items():
+            if not isinstance(value, dict):
+                lines.append(f"opt\t{key}\t{option_text(value)}")
         for loc in PICKUPS:
             m = loc.get("mirror")
             if m:
                 lines.append(f"mirror\t{m['map']}\t{m['x']}\t{m['y']}\t{m['src_map']}\t{m['src_event']}\t{loc['key']}")
-        for slot, troop, hp, atk in self.slot_data.get("enemy_swaps", []):
-            lines.append(f"eswap\t{slot}\t{troop}\t{hp}\t{atk}")
         lines.append("end")
         write_atomic(bridge / "session.txt", "\n".join(lines) + "\n")
 

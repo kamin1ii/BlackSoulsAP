@@ -208,6 +208,56 @@ class Game_Event
   def bsap_rpg_event
     @event
   end
+
+  def bsap_page
+    @page
+  end
+end
+
+module BSAP
+  GAIN_CODES = [126, 127, 128]
+
+  # the self switch that marks this page taken, when it is a plain pickup and every item on it is already sent
+  # a page that also flips a story switch or asks a question stays as it is
+  def self.taken_letter(map_id, ev, index)
+    page = ev.pages[index]
+    c = page.condition
+    return nil if c.switch1_valid || c.switch2_valid || c.variable_valid || c.item_valid || c.actor_valid
+    src = page.instance_variable_get(:@bsap_src) || "#{map_id}:#{ev.id}:#{index}"
+    letter = nil
+    gains = 0
+    page.list.each_with_index do |cmd, i|
+      p = cmd.parameters
+      return nil if cmd.code == 102 || (cmd.code == 111 && [8, 9, 10].include?(p[0]))
+      return nil if cmd.code == 121 && p[2] == 0
+      letter ||= p[0] if cmd.code == 123 && p[1] == 0
+      next unless GAIN_CODES.include?(cmd.code) && p[1] == 0 && p[2] == 0
+      key = "#{src}:#{i}"
+      return nil unless loc?(key) && done?(key)
+      gains += 1
+    end
+    return nil if gains == 0 || letter.nil?
+    return nil unless ev.pages.any? { |pg| pg.condition.self_switch_valid && pg.condition.self_switch_ch == letter }
+    letter
+  end
+
+  # new game plus clears every self switch, a pickup sent on an earlier lap or from another save shows as taken
+  def self.hide_taken(map_id, events)
+    3.times do
+      changed = false
+      events.each_value do |gev|
+        rpg = gev.bsap_rpg_event
+        index = rpg.pages.index(gev.bsap_page)
+        next unless index
+        letter = taken_letter(map_id, rpg, index)
+        next unless letter
+        $game_self_switches[[map_id, rpg.id, letter]] = true
+        gev.refresh
+        changed = true
+      end
+      break unless changed
+    end
+  end
 end
 
 class Game_Interpreter
@@ -227,8 +277,9 @@ class Game_Interpreter
     return false unless BSAP.active? && @params[1] == 0 && @params[2] == 0
     key = bsap_key
     return false unless key && BSAP.loc?(key)
+    again = BSAP.done?(key)
     BSAP.check(key)
-    BSAP.popup(BSAP.scout(key) || "Archipelago item", "Item sent")
+    BSAP.popup(BSAP.scout(key) || "Archipelago item", again ? "Already sent" : "Item sent")
     true
   end
 
@@ -270,7 +321,7 @@ class Game_Map
     return unless BSAP.active?
     BSAP.sync_deaths
     BSAP.mirrors(@map_id).each_with_index do |m, i|
-      next if $game_system.bsap_checked[m[4]]
+      next if BSAP.done?(m[4])
       source = load_data(sprintf("Data/Map%03d.rvdata2", m[2])).events[m[3]] rescue nil
       next unless source
       ev = Marshal.load(Marshal.dump(source))
@@ -284,6 +335,7 @@ class Game_Map
       ]
       @events[ev.id] = Game_Event.new(@map_id, ev)
     end
+    BSAP.hide_taken(@map_id, @events)
     refresh_tile_events if respond_to?(:refresh_tile_events, true)
   end
 end

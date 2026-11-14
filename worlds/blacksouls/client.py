@@ -4,6 +4,7 @@ import os
 import pkgutil
 import urllib.parse
 import urllib.request
+from importlib import resources
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -45,8 +46,12 @@ def mod_source() -> str:
     """The whole mod in load order, the randomizer engine first so the bridge wraps it."""
     def part(name: str) -> str:
         return pkgutil.get_data(__package__, f"game/{name}").decode("utf-8")
-    names = ("rando_data.rb", "rando_core.rb", "ap.rb", "ap_net.rb", "ap_rando.rb")
-    return "\n".join(part(n) for n in names) + "\n" + checklist_source() + "\n" + part("ap_checklist.rb")
+    names = ("rando_data.rb", "rando_core.rb", "rando_overlay.rb", "ap.rb", "ap_net.rb", "ap_rando.rb")
+    source = "\n".join(part(n) for n in names) + "\n" + checklist_source() + "\n" + part("ap_checklist.rb")
+    # the direct runtime has its own controller support and window sizing, these are for Game.exe
+    for name in ("rando_pad.rb", "rando_window.rb"):
+        source += "\nunless defined?(System)\n" + part(name) + "\nend\n"
+    return source
 
 
 def ruby_string(text: str) -> str:
@@ -90,7 +95,7 @@ class BlackSoulsCommandProcessor(ClientCommandProcessor):
             if game_version(source) not in KNOWN_VERSIONS:
                 self.output("Warning, this game version is untested and some checks may not line up")
             self.output(f"Copying the game to {target}, this can take a minute")
-            target = patch_game(source, target, mod_source())
+            target = patch_game(source, target, mod_source(), extras=resources.files(__package__) / "game")
         except Exception as e:
             self.output(f"Install failed {e}")
             return False

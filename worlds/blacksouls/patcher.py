@@ -8,6 +8,7 @@ import struct
 import zipfile
 import zlib
 from pathlib import Path
+from typing import List
 
 try:
     from .icon import extract_icon_png
@@ -199,7 +200,46 @@ def game_version(folder: Path) -> int:
     return reader.long()
 
 
-def patch_game(source: Path, target: Path, mod_source: str, copy: bool = True) -> Path:
+def copy_tree(src, dest: Path) -> None:
+    """Copies a folder out of the world, which may sit inside the .apworld zip."""
+    dest.mkdir(parents=True, exist_ok=True)
+    for child in src.iterdir():
+        if child.is_dir():
+            copy_tree(child, dest / child.name)
+        else:
+            (dest / child.name).write_bytes(child.read_bytes())
+
+
+def install_extras(target: Path, game_files, entries) -> List[str]:
+    """The stream overlay with the walking sprites its cards draw, and the files that keep a bigger window sharp.
+    Gives back the sprite sheets it could not find."""
+    folder = target / "Randomizer"
+    copy_tree(game_files / "overlay", folder / "overlay")
+    copy_tree(game_files / "upscale", folder / "upscale")
+    (folder / "rando_sharp.dll").write_bytes((game_files / "sharp" / "rando_sharp.dll").read_bytes())
+    text = (folder / "overlay" / "sprites.js").read_text(encoding="utf-8")
+    sprites = json.loads(text.split("=", 1)[1].strip().rstrip(";"))
+    wanted = {"Graphics/Characters/" + info["sheet"] + ".png": info["file"] for info in sprites.values()}
+    images = folder / "overlay" / "img"
+    images.mkdir(exist_ok=True)
+    for name, file_key, blob in entries:
+        out = wanted.pop(name.decode("utf-8").replace("\\", "/"), None)
+        if out:
+            (images / out).write_bytes(decrypt(blob, file_key))
+    # sheets the game borrows from the RPG Maker runtime are not in its archive
+    rtp = find_rtp()
+    missing = []
+    for name, out in wanted.items():
+        for root in (target, Path(rtp) if rtp else None):
+            if root and (root / name).is_file():
+                shutil.copy2(root / name, images / out)
+                break
+        else:
+            missing.append(name)
+    return missing
+
+
+def patch_game(source: Path, target: Path, mod_source: str, copy: bool = True, extras=None) -> Path:
     source = find_game_root(Path(source))
     target = Path(target)
     if copy and source.resolve() != target.resolve():
@@ -223,6 +263,8 @@ def patch_game(source: Path, target: Path, mod_source: str, copy: bool = True) -
     leftover = target / "Data" / "ScriptsAP.rvdata2"
     if leftover.exists():
         os.remove(leftover)
+    if extras is not None:
+        install_extras(target, extras, entries)
     (target / "Archipelago").mkdir(exist_ok=True)
     for name in ("session.txt", "inbox.txt", "checks.txt"):
         path = target / "Archipelago" / name

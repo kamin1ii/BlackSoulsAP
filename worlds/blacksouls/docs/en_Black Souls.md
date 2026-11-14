@@ -46,7 +46,7 @@ A popup in the bottom left shows the item name and who it belongs to.
 ## Notes
 
 - NPC rewards that depend on story choices only hold filler, so a missed quest never locks you out
-- The same goes for Dorothy's three targets, which never show up once she is locked away, and for Lamia
+- The same goes for Lamia, and for Dorothy's three targets, which never show up once she is locked away. Turn on Dorothy's Targets in Logic to make those three normal checks
 - Elisabeth, Jeanne, the Golden Goose, Marianna (the Vampire), the Crestfallen Hero (the Demonbeast Hero) and the Talking Flower (the Lord of Corruption) count their boss check however they die, so killing one early or in the basement still sends it
 - Little Match Girl, the Demonbeast Hero and the Lord of Corruption only appear once all four princess rooms are cleared, and the logic expects that
 - Shops are not randomized

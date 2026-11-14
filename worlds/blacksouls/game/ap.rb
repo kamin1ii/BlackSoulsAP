@@ -9,6 +9,9 @@ module BSAP
   ENDINGS = { 442 => "A", 443 => "B", 444 => "C", 456 => "D" }
   # a fight reached another way still counts for the boss of that arena
   SECOND_FIGHTS = { 315 => 161, 310 => 136 }
+  # the switch the game turns on when she dies by any route counts for the boss fight that kills her
+  # Elisabeth, Jeanne, the Golden Goose, the Crestfallen Hero, Marianna and the Talking Flower
+  DEATH_SWITCHES = { 164 => 164, 211 => 227, 159 => 226, 169 => 201, 555 => 309, 174 => 306 }
   SLOT_FIGHT_BASE = 10000
 
   @locs = {}
@@ -101,6 +104,19 @@ module BSAP
     @boss_checks[troop_id]
   end
 
+  def self.death(switch_id)
+    troop = DEATH_SWITCHES[switch_id]
+    check("boss:#{troop}") if troop && active? && boss_check?(troop)
+  end
+
+  # a death from before the session started, or from an older version of this script
+  def self.sync_deaths
+    return unless $game_switches
+    DEATH_SWITCHES.each_key do |s|
+      death(s) if $game_switches[s]
+    end
+  end
+
   def self.check(key)
     return unless $game_system
     list = $game_system.bsap_checked
@@ -168,6 +184,7 @@ class Game_Switches
     bsap_set(switch_id, value)
     letter = BSAP::ENDINGS[switch_id]
     BSAP.check("ending:" + letter) if value && letter && BSAP.active?
+    BSAP.death(switch_id) if value
   end
 end
 
@@ -251,6 +268,7 @@ class Game_Map
     bsap_setup_events
     BSAP.refresh_session
     return unless BSAP.active?
+    BSAP.sync_deaths
     BSAP.mirrors(@map_id).each_with_index do |m, i|
       next if $game_system.bsap_checked[m[4]]
       source = load_data(sprintf("Data/Map%03d.rvdata2", m[2])).events[m[3]] rescue nil

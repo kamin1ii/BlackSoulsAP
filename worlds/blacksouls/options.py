@@ -5,7 +5,7 @@ from Options import Choice, DefaultOnToggle, Range, Toggle, PerGameCommonOptions
 
 class Goal(Choice):
     """Which ending finishes your game.
-    Any Ending counts whichever ending you reach first.
+    Any Ending counts whichever ending you reach first, a companion's ending after Cinderella included.
     Ending A and Ending B are reached by defeating Cinderella in the Lost Empire.
     Ending C is the fairytale book route through Alice's Library. Picking it always shuffles the fairytale books
     into the item pool and you need Fairytale Books Needed of them on Alice's shelves to pull the lever.

@@ -7,6 +7,8 @@ module BSAP
   INBOX = DIR + "/inbox.txt"
   CHECKS = DIR + "/checks.txt"
   ENDINGS = { 442 => "A", 443 => "B", 444 => "C", 456 => "D" }
+  # touching it together with someone after Cinderella ends with that companion in place of A or B
+  (531..540).each { |s| ENDINGS[s] = "Companion" }
   # a fight reached another way still counts for the boss of that arena
   SECOND_FIGHTS = { 315 => 161, 310 => 136 }
   # the switch the game turns on when she dies by any route counts for the boss fight that kills her

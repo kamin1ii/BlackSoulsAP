@@ -130,6 +130,8 @@ module BSAP
     DEATH_SWITCHES.each_key do |s|
       death(s) if $game_switches[s]
     end
+  rescue StandardError
+    nil
   end
 
   def self.check(key)
@@ -174,6 +176,8 @@ module BSAP
     @notices.each do |key|
       popup(scout(key) || "Archipelago item", "Item sent")
     end
+    @notices = []
+  rescue StandardError
     @notices = []
   end
 
@@ -288,6 +292,9 @@ module BSAP
       end
       break unless changed
     end
+  rescue StandardError
+    # a problem here leaves the map as the game has it rather than stopping the game
+    nil
   end
 end
 

@@ -45,6 +45,7 @@ Or skip the client while playing. `/install` also sets up `Game_Archipelago.exe`
 - Ending A also needs, at the end, Elma, Victoria, Dorothy, Jeanne, Catherine and Miranda in the Holy Forest, a contract with Elisabeth, Goose as your lover, none of them dead or turned demonbeast and 0 Sin. None of that is tracked, miss it and you get Ending B
 - Checks you can miss only hold filler. That is every NPC reward behind a story choice, Lamia, and Dorothy's three targets unless Dorothy's Targets in Logic is on (then they wait for all four princess rooms, so new game plus through Cinderella can always bring her back)
 - Elisabeth, Jeanne, the Golden Goose, Marianna, the Crestfallen Hero and the Talking Flower send their boss check however they die
+- The prologue's pickups are checks with a second copy in Fort Ivern, the map the prologue was copied from. Whichever you take first counts, so leaving the prologue never loses one. The prologue dragon is not a check, the Helkaiser fight at Fort Ivern is
 - On a new game plus lap, pickups you already sent stay taken
 - Levels and stats are not tracked, for example becoming Dorothy's apprentice needs a stat of 30
 

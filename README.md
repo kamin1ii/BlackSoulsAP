@@ -31,7 +31,10 @@ Or skip the client while playing. `/install` also sets up `Game_Archipelago.exe`
 | Unique Checks Only | 87 | 56 | 143 |
 | Unique Checks Only with the Ending C goal | 101 | 56 | 157 |
 
-Every boss kill is a check in every mode, the fairytale bosses included. With other goals a fairytale boss still drops its book as a normal reward on top of the check. Ending C puts the 32 fairytale books into the multiworld instead, so the bosses stop dropping them and the 33 other places that hand out a book (NPCs and story events, some books have more than one depending on your choices) become checks. Nearly all of those depend on story choices, so they only hold filler. Unique Checks Only makes one check per unique item (weapons, rings, spells, key items and books), every consumable spot gives its normal item. Skip Kun-Yan, Skip Lost Empire and Skip Atlantica take those areas out on top of this.
+- Every boss kill is a check, fairytale bosses included
+- Ending C moves the books into the multiworld, so the places that hand out a book become checks (mostly filler)
+- Unique Checks Only keeps one check per unique item
+- The Skip options remove an area's checks
 
 ## Logic
 
@@ -39,12 +42,13 @@ Every boss kill is a check in every mode, the fairytale bosses included. With ot
 - The Lost Empire, Little Match Girl, the Demonbeast Hero and the Lord of Corruption only appear once all four princess rooms are cleared, so they wait for the Invitation
 - The Tainted Bog opens once Fort Ivern is reached, like the normal game
 - Ending C needs Fairytale Books Needed of the 32 books, all of them are in the multiworld
+- Ending A also needs, at the end, Elma, Victoria, Dorothy, Jeanne, Catherine and Miranda in the Holy Forest, a contract with Elisabeth, Goose as your lover, none of them dead or turned demonbeast and 0 Sin. None of that is tracked, miss it and you get Ending B
 - Checks you can miss only hold filler. That is every NPC reward behind a story choice, Lamia, and Dorothy's three targets unless Dorothy's Targets in Logic is on (then they wait for all four princess rooms, so new game plus through Cinderella can always bring her back)
 - Elisabeth, Jeanne, the Golden Goose, Marianna, the Crestfallen Hero and the Talking Flower send their boss check however they die
 - On a new game plus lap, pickups you already sent stay taken
 - Levels and stats are not tracked, for example becoming Dorothy's apprentice needs a stat of 30
 
-The game page in Archipelago ([worlds/blacksouls/docs/en_Black Souls.md](worlds/blacksouls/docs/en_Black%20Souls.md)) has the full details of every option.
+Every option is explained in [the game guide](worlds/blacksouls/docs/en_Black%20Souls.md).
 
 ## Quality of life
 

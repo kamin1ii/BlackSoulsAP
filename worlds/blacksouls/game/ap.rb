@@ -119,7 +119,7 @@ module BSAP
 
   def self.death(switch_id)
     troop = DEATH_SWITCHES[switch_id]
-    check("boss:#{troop}") if troop && active? && boss_check?(troop)
+    announce("boss:#{troop}") if troop && active? && boss_check?(troop)
   end
 
   # a death from before the session started, or from an older version of this script
@@ -160,6 +160,21 @@ module BSAP
     @inbox.select { |f| f[0].to_i >= start }
   end
 
+  # a check sent away from a pickup, a boss kill for example, gets the same popup and chime once the map is back
+  def self.announce(key)
+    again = done?(key)
+    check(key)
+    (@notices ||= []) << key unless again
+  end
+
+  def self.show_notices
+    return if @notices.nil? || @notices.empty? || !$game_temp || !$game_temp.streffect
+    @notices.each do |key|
+      popup(scout(key) || "Archipelago item", "Item sent")
+    end
+    @notices = []
+  end
+
   def self.popup(big, small, type = 5, value = 0)
     return unless $game_temp && $game_temp.streffect
     $game_temp.streffect.push(Window_Getinfo.new(big, type, small, value))
@@ -179,6 +194,7 @@ module BSAP
   def self.update_map
     refresh_session
     return unless active?
+    show_notices
     ENDINGS.each { |id, letter| check("ending:" + letter) if $game_switches[id] }
     return if $game_map.interpreter.running? || $game_message.busy?
     shown = 0
@@ -360,7 +376,7 @@ module BattleManager
       troop = $game_temp.bsap_troop
       troop = BSAP::SECOND_FIGHTS[troop] || troop if troop
       if troop && BSAP.active? && BSAP.boss_check?(troop)
-        BSAP.check("boss:#{troop}")
+        BSAP.announce("boss:#{troop}")
       end
       bsap_process_victory
     end

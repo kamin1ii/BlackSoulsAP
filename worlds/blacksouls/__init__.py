@@ -15,6 +15,10 @@ VICTORY = "Victory"
 ENDING_LOCATION = "Reach the Chosen Ending"
 BOOK_IDS = range(273, 305)
 PRINCESS_AREAS = ["Tainted Bog", "Atlantica", "Gothel's Tower", "Garden of Snow"]
+# Little Match Girl, Demonbeast Hero and Lord of Corruption only show up once all four princesses are down
+PRINCESS_GATED_BOSSES = {151, 201, 306}
+# Dorothy's three targets never appear once she is locked up and Lamia hangs on Elma's story, so they only hold filler
+MISSABLE_BOSSES = {167, 168, 169, 170}
 # in the order the game script uses, Frog, Rapunzel, Snow White, Little Mermaid
 PRINCESS_ROOMS = [
     ("Tainted Bog", 82, 44, 156),
@@ -207,7 +211,13 @@ class BlackSoulsWorld(World):
             region.locations.append(location)
         for boss in self.real_bosses:
             region = regions[self.boss_area(boss)]
-            region.locations.append(BlackSoulsLocation(self.player, boss["name"], location_ids[boss["name"]], region))
+            location = BlackSoulsLocation(self.player, boss["name"], location_ids[boss["name"]], region)
+            if boss["troop"] in PRINCESS_GATED_BOSSES:
+                location.access_rule = lambda state: all(
+                    state.can_reach_region(a, self.player) for a in PRINCESS_AREAS)
+            if boss["troop"] in MISSABLE_BOSSES:
+                location.progress_type = LocationProgressType.EXCLUDED
+            region.locations.append(location)
 
         goal = self.options.goal.value
         if goal == self.options.goal.option_ending_c:

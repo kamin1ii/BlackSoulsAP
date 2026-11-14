@@ -378,8 +378,13 @@ def main():
         rule = sorted(needs[loc["area"]])
         sections[loc["area"]].append({"name": name, "item_count": 1, "access_rules": [",".join(rule)] if rule else []})
         location_map[BASE_ID + i] = f"@{loc['area']}/{name}"
+    gated = ast.literal_eval(world_constant("PRINCESS_GATED_BOSSES"))
     for i, boss in enumerate(bosses):
-        rule = sorted(needs[boss["area"]])
+        rule = set(needs[boss["area"]])
+        if boss["troop"] in gated:
+            # the same as the way into the Lost Empire
+            rule |= needs["Lost Empire"]
+        rule = sorted(rule)
         sections[boss["area"]].append({"name": boss["name"], "item_count": 1, "access_rules": [",".join(rule)] if rule else []})
         location_map[BASE_ID + 5000 + i] = f"@{boss['area']}/{boss['name']}"
 

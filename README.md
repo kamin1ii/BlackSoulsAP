@@ -22,6 +22,16 @@ No game files are included. The client patches a copy of your own install.
 
 Or skip the client while playing. `/install` also sets up `Game_Archipelago.exe`, which connects to the server by itself using the address in `archipelago.json` (the client fills it in the first time you connect it).
 
+## Quality of life
+
+`/install` also brings over these from the standalone randomizer.
+
+- Xbox controller support in `Game.exe`, A confirms, B cancels, X runs and Start opens the menu
+- A resizable `Game.exe` window, drag the edges or press F6 to step through sizes
+- A stream overlay. Add `BLACK SOULS Archipelago/Randomizer/overlay/run_panel.html` to OBS as a browser source with Local file ticked, 504 tall and about 420 wide. It shows the in-game timer, the area, your level, souls, deaths, sin and bosses beaten, then fills in the princess rooms, companions and fairytale books as you find them
+
+![The stream overlay partway through a run](screenshots/overlay.png)
+
 ## Tracker
 
 `blacksouls_tracker.zip` in Releases is a [PopTracker](https://github.com/black-sliver/PopTracker/releases) pack. Drag it into the PopTracker window, then connect it to the same server as the client. It marks every check as reachable, out of logic or done.
@@ -33,7 +43,7 @@ The full guide is in [worlds/blacksouls/docs/setup_en.md](worlds/blacksouls/docs
 - `worlds/blacksouls` is the apworld source
 - `worlds/blacksouls/game/ap.rb` is the script injected into the game
 - `worlds/blacksouls/game/ap_net.rb` is the direct connection used by `Game_Archipelago.exe`
-- `worlds/blacksouls/game/rando_core.rb` and `rando_data.rb` are the randomizer's engine, copied over by `tools/sync_rando.py`
+- `worlds/blacksouls/game/rando_*.rb` with the `overlay`, `sharp` and `upscale` folders are the randomizer's engine, controller support, window sizing and overlay, copied over by `tools/sync_rando.py`
 - `tools` holds the scripts used to read the game data, build the location tables and build the tracker
 
 ## Credits

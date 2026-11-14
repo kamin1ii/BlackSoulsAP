@@ -31,7 +31,7 @@ Or skip the client while playing. `/install` also sets up `Game_Archipelago.exe`
 | Unique Checks Only | 87 | 56 | 143 |
 | Unique Checks Only with the Ending C goal | 101 | 56 | 157 |
 
-Ending C puts the 32 fairytale books into the multiworld, which adds their spots as checks. Unique Checks Only makes one check per unique item (weapons, rings, spells, key items and books), every consumable spot gives its normal item. Skip Kun-Yan, Skip Lost Empire and Skip Atlantica take those areas out on top of this.
+Every boss kill is a check in every mode, the fairytale bosses included. With other goals a fairytale boss still drops its book as a normal reward on top of the check. Ending C puts the 32 fairytale books into the multiworld instead, so the bosses stop dropping them and the 33 other places that hand out a book (NPCs and story events, some books have more than one depending on your choices) become checks. Nearly all of those depend on story choices, so they only hold filler. Unique Checks Only makes one check per unique item (weapons, rings, spells, key items and books), every consumable spot gives its normal item. Skip Kun-Yan, Skip Lost Empire and Skip Atlantica take those areas out on top of this.
 
 ## Logic
 

@@ -48,3 +48,19 @@ itself, so the client does not need to stay open.
 
 This runs the game on mkxp-z with the RPGMaker VX Ace AP kit by EggSlashEther. The original
 `Game.exe` still works with the client as before.
+
+## Quality of life
+
+These come from the standalone BLACK SOULS randomizer. Run `/install` again to add them to a copy
+made before they existed, your saves in that copy stay.
+
+- **Controller support.** Xbox controllers work directly in `Game.exe`. A confirms, B cancels,
+  X runs and Start opens the menu
+- **Window sizing.** Drag the `Game.exe` window bigger or press F6 to step through sizes. It stays
+  4:3, stays sharp and remembers its size
+- **Stream overlay.** Add `BLACK SOULS Archipelago/Randomizer/overlay/run_panel.html` to OBS as a
+  local file browser source. It shows the timer, area, deaths, bosses beaten, the princess rooms,
+  companions and books as you find them
+
+`Game_Archipelago.exe` has its own controller support and resizable window, so only the overlay
+is added there.

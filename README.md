@@ -22,6 +22,30 @@ No game files are included. The client patches a copy of your own install.
 
 Or skip the client while playing. `/install` also sets up `Game_Archipelago.exe`, which connects to the server by itself using the address in `archipelago.json` (the client fills it in the first time you connect it).
 
+## Checks
+
+| | Pickups | Boss kills | Total |
+|---|---|---|---|
+| Default | 571 | 56 | 627 |
+| Default with the Ending C goal | 604 | 56 | 660 |
+| Unique Checks Only | 87 | 56 | 143 |
+| Unique Checks Only with the Ending C goal | 101 | 56 | 157 |
+
+Ending C puts the 32 fairytale books into the multiworld, which adds their spots as checks. Unique Checks Only makes one check per unique item (weapons, rings, spells, key items and books), every consumable spot gives its normal item. Skip Kun-Yan, Skip Lost Empire and Skip Atlantica take those areas out on top of this.
+
+## Logic
+
+- The Invitation to Atlantica opens Atlantica, it is the only item that locks off an area
+- The Lost Empire, Little Match Girl, the Demonbeast Hero and the Lord of Corruption only appear once all four princess rooms are cleared, so they wait for the Invitation
+- The Tainted Bog opens once Fort Ivern is reached, like the normal game
+- Ending C needs Fairytale Books Needed of the 32 books, all of them are in the multiworld
+- Checks you can miss only hold filler. That is every NPC reward behind a story choice, Lamia, and Dorothy's three targets unless Dorothy's Targets in Logic is on (then they wait for all four princess rooms, so new game plus through Cinderella can always bring her back)
+- Elisabeth, Jeanne, the Golden Goose, Marianna, the Crestfallen Hero and the Talking Flower send their boss check however they die
+- On a new game plus lap, pickups you already sent stay taken
+- Levels and stats are not tracked, for example becoming Dorothy's apprentice needs a stat of 30
+
+The game page in Archipelago ([worlds/blacksouls/docs/en_Black Souls.md](worlds/blacksouls/docs/en_Black%20Souls.md)) has the full details of every option.
+
 ## Quality of life
 
 `/install` also brings over these from the standalone randomizer.

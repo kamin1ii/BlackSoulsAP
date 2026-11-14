@@ -47,7 +47,7 @@ A popup in the bottom left shows the item name and who it belongs to.
 
 - NPC rewards that depend on story choices only hold filler, so a missed quest never locks you out
 - The same goes for Lamia, and for Dorothy's three targets, since locking her up before her training makes them missable. Dorothy's Targets in Logic makes those three normal checks that the logic only expects after all four princess rooms, so you can always loop to new game plus by killing Cinderella and get them there
-- The prologue's pickups are checks with a second copy in Fort Ivern, the map the prologue was copied from. Whichever you take first counts, so leaving the prologue never loses one. The prologue dragon is not a check, the Helkaiser fight at Fort Ivern is
+- The prologue's pickups are checks with a second copy in Fort Ivern, the map the prologue was copied from. Whichever you take first counts, so leaving the prologue never loses one. Beating the dragon in the prologue sends the Drake Helkaiser check, since it then never fights you at Fort Ivern
 - On a new game plus lap, pickups you already sent stay taken so the map only shows what is left. A few pickups that also move the story along still show, and picking one up again says Already sent
 - Elisabeth, Jeanne, the Golden Goose, Marianna (the Vampire), the Crestfallen Hero (the Demonbeast Hero) and the Talking Flower (the Lord of Corruption) count their boss check however they die, so killing one early or in the basement still sends it
 - Little Match Girl, the Demonbeast Hero and the Lord of Corruption only appear once all four princess rooms are cleared, and the logic expects that

@@ -14,6 +14,8 @@ module BSAP
   # the switch the game turns on when she dies by any route counts for the boss fight that kills her
   # Elisabeth, Jeanne, the Golden Goose, the Crestfallen Hero, Marianna and the Talking Flower
   DEATH_SWITCHES = { 164 => 164, 211 => 227, 159 => 226, 169 => 201, 555 => 309, 174 => 306 }
+  # beating the dragon in the prologue means it never fights you at Fort Ivern, so either win counts
+  DEATH_SWITCHES[15] = 135
   SLOT_FIGHT_BASE = 10000
 
   @locs = {}

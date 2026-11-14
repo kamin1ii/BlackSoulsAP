@@ -35,6 +35,15 @@ module BSAP
     @seed
   end
 
+  # the slot name, the client and the direct connection both hand it over
+  def self.player
+    @player
+  end
+
+  def self.set_player(name)
+    @player = name
+  end
+
   def self.read_lines(path)
     return nil unless File.exist?(path)
     data = File.open(path, "rb") { |f| f.read }
@@ -65,7 +74,9 @@ module BSAP
     lines.each do |line|
       f = line.split("\t")
       case f[0]
-      when "seed" then @seed = f[1]
+      when "seed"
+        @seed = f[1]
+        @player = f[3].to_s
       when "loc" then @locs[f[1]] = true
       when "scout" then @scouts[f[1]] = f[2]
       when "boss" then @boss_checks[f[1].to_i] = true

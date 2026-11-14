@@ -45,6 +45,7 @@ module BSAPNet
     info["hostname"] = cfg["hostname"].to_s.empty? ? "archipelago.gg" : cfg["hostname"].to_s
     info["port"] = cfg["port"].to_i
     info["name"] = cfg["name"].to_s
+    BSAP.set_player(info["name"])
     info["password"] = cfg["password"].to_s
     # the library's own refusal handler raises, replace it with one that reports the reason
     @client.instance_variable_get(:@listeners)["ConnectionRefused"].clear

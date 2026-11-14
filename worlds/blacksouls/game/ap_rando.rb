@@ -103,3 +103,16 @@ class Game_Troop
     items.reject { |i| i.is_a?(RPG::Item) && BSAP::BOOK_RANGE.include?(i.id) }
   end
 end
+
+module RandoOverlay
+  def self.title
+    "Archipelago"
+  end
+
+  # the engine's own number means nothing in a multiworld, the slot and the multiworld's seed do
+  def self.seed_line(r)
+    name = BSAP.player.to_s
+    head = name.empty? ? "" : name + "   "
+    head + "AP " + BSAP.seed.to_s
+  end
+end

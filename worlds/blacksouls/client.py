@@ -190,7 +190,7 @@ class BlackSoulsContext(CommonContext):
         bridge = self.bridge
         if not bridge or self.slot is None:
             return
-        lines = [f"seed\t{self.seed_name or 'local'}\t{self.slot}"]
+        lines = [f"seed\t{self.seed_name or 'local'}\t{self.slot}\t{clean(self.auth or '')}"]
         real = self.missing_locations | self.checked_locations
         for key, loc_id in KEY_TO_ID.items():
             if loc_id not in real:

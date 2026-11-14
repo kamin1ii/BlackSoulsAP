@@ -30,7 +30,7 @@ Garden of Snow) have been cleared, the same as in the normal game.
 The Goal option picks which ending finishes your game.
 
 - Any Ending counts whichever ending you reach first, a companion's ending after Cinderella included
-- Ending A and Ending B come from defeating Cinderella in the Lost Empire
+- Ending A and Ending B come from defeating Cinderella in the Lost Empire and touching it yourself. Ending A also needs Elma, Victoria, Dorothy, Jeanne, Catherine and Miranda in the Holy Forest, a contract with Elisabeth, Goose as your lover, none of them dead or turned demonbeast and 0 Sin. The logic does not track any of that, miss it and you get Ending B
 - Ending C is the fairytale book route through Alice's Library. All 32 books go into the multiworld and Fairytale Books Needed sets how many Alice wants on her shelves before the lever works. The inner library room opens once that many minus 8 are shelved
 - Ending D is the route through Kun-Yan, and the logic expects every area to be reachable before you finish
 

@@ -46,7 +46,7 @@ A popup in the bottom left shows the item name and who it belongs to.
 ## Notes
 
 - NPC rewards that depend on story choices only hold filler, so a missed quest never locks you out
-- The same goes for Lamia, and for Dorothy's three targets, which never show up once she is locked away. Turn on Dorothy's Targets in Logic to make those three normal checks. If you lock her up anyway, beating Cinderella loops the game into new game plus, which frees her so you can take her training on that lap
+- The same goes for Lamia, and for Dorothy's three targets, since locking her up before her training makes them missable. Dorothy's Targets in Logic makes those three normal checks that the logic only expects after all four princess rooms, so you can always loop to new game plus by killing Cinderella and get them there
 - On a new game plus lap, pickups you already sent stay taken so the map only shows what is left. A few pickups that also move the story along still show, and picking one up again says Already sent
 - Elisabeth, Jeanne, the Golden Goose, Marianna (the Vampire), the Crestfallen Hero (the Demonbeast Hero) and the Talking Flower (the Lord of Corruption) count their boss check however they die, so killing one early or in the basement still sends it
 - Little Match Girl, the Demonbeast Hero and the Lord of Corruption only appear once all four princess rooms are cleared, and the logic expects that

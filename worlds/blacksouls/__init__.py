@@ -214,7 +214,9 @@ class BlackSoulsWorld(World):
         for boss in self.real_bosses:
             region = regions[self.boss_area(boss)]
             location = BlackSoulsLocation(self.player, boss["name"], location_ids[boss["name"]], region)
-            if boss["troop"] in PRINCESS_GATED_BOSSES:
+            # with Dorothy locked up the way back is new game plus through Cinderella, so the same rule applies
+            looped = boss["troop"] in DOROTHY_TARGETS and self.options.dorothy_targets_in_logic
+            if boss["troop"] in PRINCESS_GATED_BOSSES or looped:
                 location.access_rule = lambda state: all(
                     state.can_reach_region(a, self.player) for a in PRINCESS_AREAS)
             if boss["troop"] in MISSABLE_BOSSES:

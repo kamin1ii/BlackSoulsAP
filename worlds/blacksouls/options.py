@@ -106,11 +106,9 @@ class PauseMenuChecklist(DefaultOnToggle):
 
 
 class DorothyTargetsInLogic(Toggle):
-    """Dorothy's training sends you after the Scarecrow, the Tin Man and the Lion, and they only show up once you have
-    taken it. Locking Dorothy up before that keeps them away until new game plus brings her back. Off they only ever
-    hold filler. On they are normal checks that can hold anything, for players who leave Dorothy alone. If she is locked
-    up anyway, beating Cinderella loops the game into new game plus, which frees her so you can take her training
-    and fight them on that lap."""
+    """The Scarecrow, Tin Man and Lion from Dorothy's training. Off they only hold filler, since locking her up before
+    her training makes them missable. On they are normal checks that the logic only expects after all four princess
+    rooms, so you can always loop to new game plus by killing Cinderella and get them there."""
     display_name = "Dorothy's Targets in Logic"
 
 

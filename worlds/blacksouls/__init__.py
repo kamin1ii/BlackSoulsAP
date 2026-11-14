@@ -17,8 +17,10 @@ BOOK_IDS = range(273, 305)
 PRINCESS_AREAS = ["Tainted Bog", "Atlantica", "Gothel's Tower", "Garden of Snow"]
 # Little Match Girl, Demonbeast Hero and Lord of Corruption only show up once all four princesses are down
 PRINCESS_GATED_BOSSES = {151, 201, 306}
-# Dorothy's three targets never appear once she is locked up and Lamia hangs on Elma's story, so they only hold filler
-MISSABLE_BOSSES = {167, 168, 169, 170}
+# Lamia hangs on Elma's story, so she only holds filler
+MISSABLE_BOSSES = {170}
+# Dorothy's three targets never appear once she is locked up, filler only unless the player asks for them
+DOROTHY_TARGETS = {167, 168, 169}
 # in the order the game script uses, Frog, Rapunzel, Snow White, Little Mermaid
 PRINCESS_ROOMS = [
     ("Tainted Bog", 82, 44, 156),
@@ -216,6 +218,8 @@ class BlackSoulsWorld(World):
                 location.access_rule = lambda state: all(
                     state.can_reach_region(a, self.player) for a in PRINCESS_AREAS)
             if boss["troop"] in MISSABLE_BOSSES:
+                location.progress_type = LocationProgressType.EXCLUDED
+            if boss["troop"] in DOROTHY_TARGETS and not self.options.dorothy_targets_in_logic:
                 location.progress_type = LocationProgressType.EXCLUDED
             region.locations.append(location)
 

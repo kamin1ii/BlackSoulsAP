@@ -105,6 +105,13 @@ class PauseMenuChecklist(DefaultOnToggle):
     display_name = "Pause Menu Checklist"
 
 
+class DorothyTargetsInLogic(Toggle):
+    """Dorothy's training sends you after the Scarecrow, the Tin Man and the Lion, and they only show up once you have
+    taken it. Locking Dorothy up before that keeps them away until new game plus brings her back. Off they only ever
+    hold filler. On they are normal checks that can hold anything, for players who leave Dorothy alone."""
+    display_name = "Dorothy's Targets in Logic"
+
+
 class ShufflePrologue(DefaultOnToggle):
     """Include the prologue's pig fights and the dragon in Boss Shuffle and Enemy Shuffle. Off keeps the opening
     fights as the normal game has them."""
@@ -129,3 +136,4 @@ class BlackSoulsOptions(PerGameCommonOptions):
     enemy_shuffle: EnemyShuffle
     shuffle_prologue: ShufflePrologue
     pause_menu_checklist: PauseMenuChecklist
+    dorothy_targets_in_logic: DorothyTargetsInLogic

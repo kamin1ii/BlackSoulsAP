@@ -47,7 +47,9 @@ def mod_source() -> str:
     def part(name: str) -> str:
         return pkgutil.get_data(__package__, f"game/{name}").decode("utf-8")
     names = ("rando_data.rb", "rando_core.rb", "rando_overlay.rb", "ap.rb", "ap_net.rb", "ap_rando.rb")
-    source = "\n".join(part(n) for n in names) + "\n" + checklist_source() + "\n" + part("ap_checklist.rb")
+    manifest = json.loads(pkgutil.get_data(__package__, "archipelago.json").decode("utf-8"))
+    source = "BSAP_VERSION = " + ruby_string(manifest["world_version"]) + "\n"
+    source += "\n".join(part(n) for n in names) + "\n" + checklist_source() + "\n" + part("ap_checklist.rb")
     # the direct runtime has its own controller support and window sizing, these are for Game.exe
     for name in ("rando_pad.rb", "rando_window.rb"):
         source += "\nunless defined?(System)\n" + part(name) + "\nend\n"

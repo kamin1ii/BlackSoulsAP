@@ -109,6 +109,19 @@ module RandoOverlay
     "Archipelago"
   end
 
+  # the overlay shows this world's version, not the randomizer engine's
+  class << self
+    alias bsap_state state
+    def state(r, log)
+      bsap_state(r, log).merge("version" => BSAP_VERSION)
+    end
+
+    alias bsap_idle_state idle_state
+    def idle_state
+      bsap_idle_state.merge("version" => BSAP_VERSION)
+    end
+  end
+
   # the engine's own number means nothing in a multiworld, the slot and the multiworld's seed do
   def self.seed_line(r)
     name = BSAP.player.to_s
